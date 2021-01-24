@@ -1,0 +1,20 @@
+
+*.zip
+Logo/Logo.png
+Logo_Honorbuddy.jpeg
+RotationBot_GUI - Kopie.py
+__pycache__/directkeys.cpython-36.pyc
+__pycache__/RotationBot_GUI.cpython-36.pyc
+build/RotationBot_GUI/Analysis-00.toc
+build/RotationBot_GUI/EXE-00.toc
+build/RotationBot_GUI/PKG-00.pkg
+build/RotationBot_GUI/PKG-00.toc
+build/RotationBot_GUI/PYZ-00.pyz
+build/RotationBot_GUI/PYZ-00.toc
+build/RotationBot_GUI/RotationBot_GUI.exe.manifest
+build/RotationBot_GUI/Tree-00.toc
+build/RotationBot_GUI/Tree-01.toc
+build/RotationBot_GUI/Tree-02.toc
+build/RotationBot_GUI/warn-RotationBot_GUI.txt
+build/RotationBot_GUI/xref-RotationBot_GUI.html
+dist/RotationBot_GUI.exe

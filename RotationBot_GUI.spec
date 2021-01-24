@@ -1,8 +1,9 @@
 # -*- mode: python ; coding: utf-8 -*-
 
 block_cipher = None
-import sys
-sys.setrecursionlimit(5000)
+
+import sys ; 
+sys.setrecursionlimit(sys.getrecursionlimit() * 5) 
 
 a = Analysis(['RotationBot_GUI.py'],
              pathex=['F:\\WoW-RotBot'],
@@ -31,4 +32,4 @@ exe = EXE(pyz,
           upx=True,
           upx_exclude=[],
           runtime_tmpdir=None,
-          console=True )
+          console=False )

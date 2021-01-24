@@ -1,0 +1,10 @@
+-----Icon Directory-----
+F:/WoWAddonDev/WoWIcons/Monk/
+-----Spells-----
+Tigerpalm Blackout Cranekick Risingsunkick Fistoffury Fistofthewhitetiger Whirlingpunch
+-----Cooldowns-----
+Invokexuen Stormearthfire Weaponsoforder Touchofdeath peacebloom
+-----Hotkeys Spells-----
+["1","2","4","3","E","F","G"]
+-----Hotkeys CDs-----
+[["LALT", "1"], ["LCONTROL", "Q"], ["LALT", "5"], ["LCONTROL", "G"], []]

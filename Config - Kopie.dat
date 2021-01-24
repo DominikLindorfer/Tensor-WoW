@@ -4,11 +4,7 @@ F:/WoWAddonDev/WoWIcons/Paladin/
 blessedhammer divinetoll judgement avengersshield hammerofwrath consecration
 -----Cooldowns-----
 ardentdefender avengingwrath shieldofvengeance acientkings wordofglory seraphim peacebloom
------Covenant-----
-autumn spring summer winter peacebloom
 -----Hotkeys Spells-----
 ["3","F","1","2","G","Q"]
 -----Hotkeys CDs-----
 [["LSHIFT", "3"], ["LSHIFT", "E"], ["4"], ["LSHIFT", "F"], ["E"],  ["LCONTROL", "3"], []]
------Hotkeys Covenant-----
-[["LALT", "3"],["LALT", "3"],["LALT", "3"],["LALT", "3"], []]
