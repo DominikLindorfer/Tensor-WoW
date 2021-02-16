@@ -12,3 +12,5 @@ Weaponsoforder peacebloom
 [["LCONTROL", "Q"], ["LCONTROL", "E"], ["LALT", "2"], ["LALT", "1"], ["LALT", "3"], ["LSHIFT", "4"], ["LSHIFT", "E"], [], ["G"]]
 -----Hotkeys Covenant-----
 [["LALT", "5"], []]
+-----Hotkey Kick-----
+[["LSHIFT", "Q"]]

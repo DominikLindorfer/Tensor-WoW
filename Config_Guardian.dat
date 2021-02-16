@@ -1,0 +1,16 @@
+-----Icon Directory-----
+F:/WoWAddonDev/WoWIcons/Druid/
+-----Spells-----
+Moonfire Mangle Swipe Trash Maul Pulverize
+-----Cooldowns-----
+Ironfur Barkskin Incarnation FrenziedRegeneration Survival Renewal Bristlingfur peacebloom
+-----Covenant-----
+AdaptiveSwarm peacebloom
+-----Hotkeys Spells-----
+["Q","1","2","E","3","G"]
+-----Hotkeys CDs-----
+[["4"], ["5"], ["LSHIFT", "E"], ["LSHIFT", "F"], ["F"], ["LALT", "1"], ["LALT","3"], []]
+-----Hotkeys Covenant-----
+[["LCONTROL","F"], []]
+-----Hotkey Kick-----
+[["LALT", "2"]]

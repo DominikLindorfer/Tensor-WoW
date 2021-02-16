@@ -7,14 +7,17 @@ GUI for WoW Rotation Bot
 """
 from tkinter import * 
 from threading import Thread
+from win32gui import GetWindowText, GetForegroundWindow
+from ttkthemes import ThemedStyle
 
 #-----Main Window-----
 root = Tk()
-root.title("WoW RotationBot GUI")
-root.geometry("535x450")
+root.title("WoW Rot Bot")
+root.geometry("539x520")
+
 # root.configure(bg='Grey')
 app = Frame(root)
-# app.configure(bg='Grey')
+app.configure(bg='White')
 app.grid()
 
 col_count = 10
@@ -31,7 +34,7 @@ import PIL
 import PIL.Image as Image
 import PIL.ImageTk as ImageTk
 
-fp = open("Logo.png","rb")
+fp = open("LogoV2.png","rb")
 image = PIL.Image.open(fp)
 photo = PIL.ImageTk.PhotoImage(image)
 
@@ -53,7 +56,7 @@ def on_click(x, y, button, pressed):
         return False
 
 def on_scroll(x, y, dx, dy):
-    print('Scrolled {0} at {1}'.format('down' if dy < 0 else 'up',(x, y)))
+    print('Scrolled {0} at {1s}'.format('down' if dy < 0 else 'up',(x, y)))
 
 # Collect events until released
 def find_mouseposition():
@@ -183,7 +186,10 @@ def get_config(Config_Filepath):
    f.readline()
    hotkeys_covenant = ast.literal_eval(f.readline().rstrip())
    
-   return icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant
+   f.readline()
+   hotkeys_kick = ast.literal_eval(f.readline().rstrip())
+   
+   return icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick
 
 def get_Settings():
    f = open("Settings.dat", "r")
@@ -199,17 +205,22 @@ def get_Settings():
    f.readline()
    WA_Position_Combat = ast.literal_eval(f.readline().rstrip()) 
    
-   return WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant, WA_Position_Combat
+   f.readline()
+   WA_Position_Kick = ast.literal_eval(f.readline().rstrip()) 
+   
+   return WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant, WA_Position_Combat, WA_Position_Kick
 
 WA_Position_Spells = [1480, 584, 28, 28]
 WA_Position_CDs = [1480, 682, 28, 28]
 WA_Position_Covenant = [1480, 782, 28, 28]
 WA_Position_Combat = [1480, 832, 5, 5]
-WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant, WA_Position_Combat = get_Settings()
+WA_Position_Kick = [1517, 832, 5, 5]
+WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant, WA_Position_Combat, WA_Position_Kick = get_Settings()
 
 Spells_True = IntVar(value=1)
 CDs_True = IntVar(value=1)
 Covenant_True = IntVar(value=1)
+Kick_True = IntVar(value=1)
    
 def RotBot_main():
     #-----Main Rotation-Bot Routine-----
@@ -221,9 +232,10 @@ def RotBot_main():
     global Spells_True
     global CDs_True
     global Covenant_True
+    global Kick_True
     
-    icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant = get_config(Config_Filepath)
-    print(icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant)
+    icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick = get_config(Config_Filepath)
+    print(icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick)
     
     #-----Set Directory-----
     # icon_dir = "F:/WoWAddonDev/WoWIcons/Paladin/"
@@ -273,6 +285,11 @@ def RotBot_main():
         if stop == 1:
             break
         
+        if(GetWindowText(GetForegroundWindow()) != "World of Warcraft"):
+            print("WoW is not the Focus Window!!")
+            time.sleep(0.5)
+            continue
+        
         # global idx
         # idx = idx+1
         # print (idx)
@@ -283,9 +300,6 @@ def RotBot_main():
         # printscreen = screen_record(1493, 798, 5, 5)
         printscreen = screen_record(WA_Position_Combat[0], WA_Position_Combat[1], 5, 5)
         printscreen = cv2.cvtColor(printscreen, cv2.COLOR_BGR2GRAY)
-        
-        # print("Not in Combat! (Score = ", printscreen.sum()/100, ")")
-        # continue
         
         if(printscreen.sum()/100 < 35 or printscreen.sum()/100 > 45):
             print("Not in Combat! (Score = ", printscreen.sum()/100, ")")
@@ -311,6 +325,9 @@ def RotBot_main():
         printscreen_covenant = screen_record(WA_Position_Covenant[0], WA_Position_Covenant[1], WA_Position_Covenant[2], WA_Position_Covenant[3])
         printscreen_covenant = cv2.cvtColor(printscreen_covenant, cv2.COLOR_BGR2GRAY)
         
+        printscreen_kick = screen_record(WA_Position_Kick[0], WA_Position_Kick[1], 5, 5)
+        printscreen_kick = cv2.cvtColor(printscreen_kick, cv2.COLOR_BGR2GRAY)
+         
         
         if(first_run):
             # printscreen_old = printscreen
@@ -328,7 +345,7 @@ def RotBot_main():
             scores = np.append(scores, score)
             # scores = np.concatenate((scores, np.array([[score, numb]])))
             # print("SSIM: {}".format(score))
-            
+               
         for icon in icons_CDs:
             (score_CDs, diff) = compare_ssim(printscreen_CDs, icon, full=True)
             scores_CDs = np.append(scores_CDs, score_CDs)
@@ -339,6 +356,7 @@ def RotBot_main():
             (score_Covenant, diff) = compare_ssim(printscreen_covenant, icon, full=True)
             scores_Covenant = np.append(scores_Covenant, score_Covenant)
         
+        
         sh_arr = np.stack((scores, hotkeys), axis=1)
         sh_arr = sh_arr[np.argsort(sh_arr[:, 0])][::-1]
         
@@ -347,35 +365,39 @@ def RotBot_main():
         
         sh_arr_Covenant = np.stack((scores_Covenant, hotkeys_covenant), axis=1)
         sh_arr_Covenant = sh_arr_Covenant[np.argsort(sh_arr_Covenant[:, 0])][::-1]
-               
-        # # #-----Skip Spell if there is no match-----
-        # # if(np.max(sh_arr) < 0.05):
-        # #     time.sleep(random.uniform(0,0.1))
-        # #     # continue
-        
+                
         #-----Select Direct Input Key to press-----
+        #-----Kick First if Casting-----
+        if(printscreen_kick.sum()/100 == 226):
+            print("KICK ACTIVATED!!!")
+            for key_kick in hotkeys_kick[0]:
+                PressKey(dict_hkeys["_" + key_kick])
+                time.sleep(random.uniform(0,0.1))
+            for key_kick in hotkeys_kick[0]:
+                ReleaseKey(dict_hkeys["_" + key_kick]) 
+                time.sleep(random.uniform(0,0.1))
+        
         #-----Cooldowns First-----
         if(sh_arr_CDs[0,0] > 0.1 and CDs_True.get()):
-            # print(sh_arr_CDs)
-            print(sh_arr_CDs[0,1])
+            print(sh_arr_CDs[0,0])
             for key_CDs in sh_arr_CDs[0,1]:
                 PressKey(dict_hkeys["_" + key_CDs])
-                time.sleep(random.uniform(0,0.1))
+                time.sleep(random.uniform(0,0.4))
                 
             for key_CDs in sh_arr_CDs[0,1]:
                 ReleaseKey(dict_hkeys["_" + key_CDs]) 
-                time.sleep(random.uniform(0,0.1))
+                time.sleep(random.uniform(0,0.4))
         
         #-----Covenant Utility Second
         if(sh_arr_Covenant[0,0] > 0.1 and Covenant_True.get()):
             print(sh_arr_Covenant[0,1])
             for key_Covenant in sh_arr_Covenant[0,1]:
                 PressKey(dict_hkeys["_" + key_Covenant])
-                time.sleep(random.uniform(0,0.1))
+                time.sleep(random.uniform(0,0.4))
                 
             for key_Covenant in sh_arr_Covenant[0,1]:
                 ReleaseKey(dict_hkeys["_" + key_Covenant]) 
-                time.sleep(random.uniform(0,0.1))
+                time.sleep(random.uniform(0,0.4))
         
         # #-----Spells Third-----
         if(Spells_True.get()):
@@ -383,9 +405,6 @@ def RotBot_main():
             key = dict_hkeys["_" + sh_arr[0,1]]
             PressKey(key)
             ReleaseKey(key)
-        
-        # if sh_arr[0,1] == "E":
-        #     time.sleep(3.7)
         
         time.sleep(random.uniform(0,0.3))
 
@@ -588,20 +607,27 @@ def var_states():
 #-----Buttons-----        
 Button_Start = Button(app, bg="#00FF00", fg="Black", text="Start", font = helv36, command=start_RotBot)
 Button_Stop = Button(app, bg="Red", fg="Black", text="Stop", font = helv36, command=stop)
-Button_Start.grid(row=1, column=0,sticky="nsew")
-Button_Stop.grid(row=1, column=1,sticky="nsew")
+Button_Start.grid(row=1, column=0,sticky="nsew", padx=2, pady=2)
+Button_Stop.grid(row=1, column=1,sticky="nsew", padx=2, pady=2)
 
 Button_WAPosition = Button(master=app, text="Get WA Position", command=thread_findmouse)
-Button_WAPosition.grid(row=2, column=0, sticky="nsew")
+Button_WAPosition.grid(row=2, column=0, sticky="nsew", padx=2, pady=2)
 Button_OpenConfigFile = tk.Button(app, text="Open Config File", command=open_configfile)
-Button_OpenConfigFile.grid(row=2, column=1, sticky="nsew")
+Button_OpenConfigFile.grid(row=2, column=1, sticky="nsew", padx=2, pady=2)
 # , padx=5, pady=5
-Checkbutton(app, text="Use Spells", variable=Spells_True).grid(row=4, column=1, sticky="nsew")
-Checkbutton(app, text="Use CDs", variable=CDs_True).grid(row=5, column=1, sticky="nsew")
-Checkbutton(app, text="Use Covenant", variable=Covenant_True).grid(row=6, column=1, sticky="nsew")
+
+# testframe = Frame(app)
+# Checkbutton(testframe, text="Use Spells", variable=Spells_True).grid(row=0, column=0, sticky="w")
+# Checkbutton(testframe, text="Use CDs", variable=CDs_True).grid(row=0, column=1, sticky="e")
+# testframe.grid(row=9, column=1, sticky="nsew")
+
+Checkbutton(app, text="Enable Spells", variable=Spells_True, bg = "White").grid(row=5, column=1, sticky="w")
+Checkbutton(app, text="Enable CDs", variable=CDs_True, bg = "White").grid(row=6, column=1, sticky="w")
+Checkbutton(app, text="Enable Covenant", variable=Covenant_True, bg = "White").grid(row=7, column=1, sticky="w")
+Checkbutton(app, text="Enable Kick", variable=Covenant_True, bg = "White").grid(row=8, column=1, sticky="w")
 
 Button_showWA_Pic = Button(master=app, text="Get WA Pictures", command=lambda:showWA_Pic(label_showWA_Spells, label_showWA_CDs, label_showWA_Covenant, WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant))
-Button_showWA_Pic.grid(row=7, column=1, sticky="nsew")
+Button_showWA_Pic.grid(row=10, column=0, sticky="nsew", padx=2, pady=2)
 
 # Button(app, text='Get What to use', command=var_states).grid(row=6, column=1, columnspan = 2)
 
@@ -619,10 +645,13 @@ Button_showWA_Pic.grid(row=7, column=1, sticky="nsew")
 
 
 #-----Labels-----
-Label_WAPosition = Label(master=app, text="WeakAura Position on Screen")
+Label_WAPosition = Label(master=app, text="WeakAura Position on Screen", bg = "White")
 Label_WAPosition.grid(row=3, column=0, sticky="nsew")
-Label_Filepath_Config = Label(master=app, text="Config File Path")
+Label_Filepath_Config = Label(master=app, text="Config File Path", bg = "White")
 Label_Filepath_Config.grid(row=3, column=1, sticky="nsew")
+
+Label_Utilities = Label(master=app, text="Utilities", bg = "White", font = 'helvetica 12 underline')
+Label_Utilities. grid(row=4, column=1, sticky="w")
 
 # Label_WAPosition = Label(master=app, text="WeakAura Position on Screen")
 # Label_WAPosition.grid(row=1, column=1)
@@ -630,23 +659,23 @@ Label_Filepath_Config.grid(row=3, column=1, sticky="nsew")
 # Label_WA_curPosition["text"] = 'Position: {0}'.format(WA_Position)
 # Label_WA_curPosition.grid(row=10, column=1)
 
-label_showWA_Spells = Label(app, image = WA_img)
+label_showWA_Spells = Label(app, image = WA_img, bg = "White")
 label_showWA_Spells.image = WA_img
 label_showWA_Spells.grid(row=4, column=0, rowspan = 2, sticky="nsew") 
 
-label_showWA_CDs = Label(app, image = WA_img)
+label_showWA_CDs = Label(app, image = WA_img, bg = "White")
 label_showWA_CDs.image = WA_img
 label_showWA_CDs.grid(row=6, column=0, rowspan = 2, sticky="nsew") 
 
-label_showWA_Covenant = Label(app, image = WA_img)
+label_showWA_Covenant = Label(app, image = WA_img, bg = "White")
 label_showWA_Covenant.image = WA_img
 label_showWA_Covenant.grid(row=8, column=0, rowspan = 2, sticky="nsew") 
     
 #-----Entries-----
 
-
-
-
+# style = ThemedStyle(root)
+# style.theme_names()
+# style.theme_use('scidgrey')  # white style
 app.mainloop() 
 
 
