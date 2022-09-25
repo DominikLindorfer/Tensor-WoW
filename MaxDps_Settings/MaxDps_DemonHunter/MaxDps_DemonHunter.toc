@@ -1,0 +1,12 @@
+## Title: MaxDps_DemonHunter
+## Version: 9.0.2.4
+## Author: Kaminaris
+## Interface: 90002
+## Dependencies: MaxDps
+## LoadOnDemand: 1
+## X-Curse-Project-ID: 255102
+## X-WoWI-ID: 24644
+
+Main.lua
+Specialization\Havoc.lua
+Specialization\Vengeance.lua

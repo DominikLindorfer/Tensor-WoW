@@ -1,0 +1,15 @@
+## Title: MaxDps_DeathKnight
+## Version: 9.0.2
+## Author: Kaminaris
+## Interface: 90002
+## Dependencies: MaxDps
+## LoadOnDemand: 1
+## SavedVariables: MaxDpsDeathKnightOptions
+## X-Curse-Project-ID: 258275
+## X-WoWI-ID: 24638
+
+Main.lua
+Config.lua
+Specialization/Blood.lua
+Specialization/Frost.lua
+Specialization/Unholy.lua

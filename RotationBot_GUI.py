@@ -13,9 +13,9 @@ from ttkthemes import ThemedStyle
 #-----Main Window-----
 root = Tk()
 root.title("WoW Rot Bot")
-root.geometry("539x520")
+root.geometry("505x480")
+root.tk.call('wm', 'iconphoto', root._w, PhotoImage(file='LogoV3_icon.png'))
 
-# root.configure(bg='Grey')
 app = Frame(root)
 app.configure(bg='White')
 app.grid()
@@ -34,7 +34,7 @@ import PIL
 import PIL.Image as Image
 import PIL.ImageTk as ImageTk
 
-fp = open("LogoV2.png","rb")
+fp = open("LogoV3.png","rb")
 image = PIL.Image.open(fp)
 photo = PIL.ImageTk.PhotoImage(image)
 
@@ -44,6 +44,8 @@ label.grid(row=0, column=0, columnspan = 2)
 
 #-----Find WA Position on Screen (click on anchor in the middle)-----
 from pynput import mouse    
+from pynput import keyboard
+from pynput.keyboard import Key
 
 def on_move(x, y):
     Label_WAPosition["text"] = 'Pointer moved to {0}'.format((x, y))
@@ -55,6 +57,35 @@ def on_click(x, y, button, pressed):
         # Stop listener
         return False
 
+# def on_click(x, y, button, pressed):
+#     btn = button.name
+
+#     if btn == 'left':
+#         print('Left if Pressed')
+#         # ====== < Handle Pressed or released Event ====== > # 
+#         if pressed:
+#             print('Do somethin when Pressed with LEft')
+#         else:
+#             print('LEFT is Released')
+#     elif btn == 'right':
+#         print('Right BTN was pressed ')
+#         # ====== < Handle Pressed or released Event ====== > # 
+#         if not pressed:
+#             print('right Button is released')
+#         else:
+#             pass
+
+#working below!
+# def on_click(x, y, button, pressed):
+#     print(button)  # Print button to see which button of mouse was pressed
+#     print('{0} at {1}'.format(
+#         'Pressed' if pressed else 'Released',
+#         (x, y)))
+    
+# listener = mouse.Listener(on_click=on_click)
+# listener.start()
+# listener.stop()
+
 def on_scroll(x, y, dx, dy):
     print('Scrolled {0} at {1s}'.format('down' if dy < 0 else 'up',(x, y)))
 
@@ -62,18 +93,15 @@ def on_scroll(x, y, dx, dy):
 def find_mouseposition():
     with mouse.Listener(on_move=on_move, on_click=on_click, on_scroll=on_scroll) as listener:
         listener.join()
-    
+        
 def thread_findmouse():
-    # Create and launch a thread 
     t = Thread(target = find_mouseposition)
     t.start()
-
 
 #-----Find Path of the Config File-----
 import tkinter as tk
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 
-#-----File Stuff-----
 Config_Filepath = "F:/WoW-RotBot/Config.dat"
 def open_configfile():
 
@@ -403,6 +431,7 @@ def RotBot_main():
         if(Spells_True.get()):
             print(sh_arr[0,1])
             key = dict_hkeys["_" + sh_arr[0,1]]
+            time.sleep(random.uniform(0,0.4)) 
             PressKey(key)
             ReleaseKey(key)
         
@@ -604,30 +633,30 @@ def var_states():
    print("%d %d %d" % (Spells_True.get(), CDs_True.get(), Covenant_True.get()))
 
 
-#-----Buttons-----        
-Button_Start = Button(app, bg="#00FF00", fg="Black", text="Start", font = helv36, command=start_RotBot)
-Button_Stop = Button(app, bg="Red", fg="Black", text="Stop", font = helv36, command=stop)
+#-----Buttons-----     
+from tkinter import ttk
+# Button_Start = Button(app, bg="#00FF00", fg="Black", text="Start", font = helv36, command=start_RotBot)
+# Button_Stop = Button(app, bg="Red", fg="Black", text="Stop", font = helv36, command=stop)
+
+Button_Start = ttk.Button(app, text="Start", command=start_RotBot, style="L.TButton")
+Button_Stop = ttk.Button(app, text="Stop", command=stop, style="L.TButton")
 Button_Start.grid(row=1, column=0,sticky="nsew", padx=2, pady=2)
 Button_Stop.grid(row=1, column=1,sticky="nsew", padx=2, pady=2)
 
-Button_WAPosition = Button(master=app, text="Get WA Position", command=thread_findmouse)
-Button_WAPosition.grid(row=2, column=0, sticky="nsew", padx=2, pady=2)
-Button_OpenConfigFile = tk.Button(app, text="Open Config File", command=open_configfile)
+Button_OpenConfigFile = ttk.Button(app, text="Open Config File", command=open_configfile, style="L2.TButton")
 Button_OpenConfigFile.grid(row=2, column=1, sticky="nsew", padx=2, pady=2)
-# , padx=5, pady=5
 
-# testframe = Frame(app)
-# Checkbutton(testframe, text="Use Spells", variable=Spells_True).grid(row=0, column=0, sticky="w")
-# Checkbutton(testframe, text="Use CDs", variable=CDs_True).grid(row=0, column=1, sticky="e")
-# testframe.grid(row=9, column=1, sticky="nsew")
+cb_row = 3
+ttk.Checkbutton(app, text="Enable Spells", variable=Spells_True,style='Red.TCheckbutton').grid(row=cb_row, column=0, sticky="w", padx=(15, 0))
+ttk.Checkbutton(app, text="Enable CDs", variable=CDs_True, style='Red.TCheckbutton').grid(row=cb_row+1, column=0, sticky="w", padx=(15, 0))
+ttk.Checkbutton(app, text="Enable Covenant", variable=Kick_True, style='Red.TCheckbutton').grid(row=cb_row+2, column=0, sticky="w", padx=(15, 0))
+ttk.Checkbutton(app, text="Enable Kick", variable=Covenant_True, style='Red.TCheckbutton').grid(row=cb_row+3, column=0, sticky="w", padx=(15, 0))
 
-Checkbutton(app, text="Enable Spells", variable=Spells_True, bg = "White").grid(row=5, column=1, sticky="w")
-Checkbutton(app, text="Enable CDs", variable=CDs_True, bg = "White").grid(row=6, column=1, sticky="w")
-Checkbutton(app, text="Enable Covenant", variable=Covenant_True, bg = "White").grid(row=7, column=1, sticky="w")
-Checkbutton(app, text="Enable Kick", variable=Covenant_True, bg = "White").grid(row=8, column=1, sticky="w")
+Button_showWA_Pic = ttk.Button(master=app, text="Get WA Pictures", command=lambda:showWA_Pic(label_showWA_Spells, label_showWA_CDs, label_showWA_Covenant, WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant), style = "s.TButton")
+Button_showWA_Pic.grid(row=7, column=0, sticky="nsew", padx=2, pady=2)
 
-Button_showWA_Pic = Button(master=app, text="Get WA Pictures", command=lambda:showWA_Pic(label_showWA_Spells, label_showWA_CDs, label_showWA_Covenant, WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant))
-Button_showWA_Pic.grid(row=10, column=0, sticky="nsew", padx=2, pady=2)
+Button_WAPosition = ttk.Button(master=app, text="Get WA Position", command=thread_findmouse, style = "s.TButton")
+Button_WAPosition.grid(row=8, column=0, sticky="nsew", padx=2, pady=2)
 
 # Button(app, text='Get What to use', command=var_states).grid(row=6, column=1, columnspan = 2)
 
@@ -645,13 +674,14 @@ Button_showWA_Pic.grid(row=10, column=0, sticky="nsew", padx=2, pady=2)
 
 
 #-----Labels-----
-Label_WAPosition = Label(master=app, text="WeakAura Position on Screen", bg = "White")
-Label_WAPosition.grid(row=3, column=0, sticky="nsew")
-Label_Filepath_Config = Label(master=app, text="Config File Path", bg = "White")
-Label_Filepath_Config.grid(row=3, column=1, sticky="nsew")
+# Label_Utilities = ttk.Label(master=app, text="  Utilities  ", bg = "White", font = 'Cambria 16 underline')
+Label_Utilities = ttk.Label(master=app, text="  Utilities  ", style = "L2.TLabel")
+Label_Utilities. grid(row=2, column=0, sticky="n")
+Label_WAPosition = ttk.Label(master=app, text="WeakAura Position on Screen", style = "L3.TLabel")
+Label_WAPosition.grid(row=9, column=0, sticky="n")
 
-Label_Utilities = Label(master=app, text="Utilities", bg = "White", font = 'helvetica 12 underline')
-Label_Utilities. grid(row=4, column=1, sticky="w")
+Label_Filepath_Config = ttk.Label(master=app, text="Config File Path", style = "L3.TLabel", wraplength=200)
+Label_Filepath_Config.grid(row=3, column=1, sticky="n", rowspan = 2)
 
 # Label_WAPosition = Label(master=app, text="WeakAura Position on Screen")
 # Label_WAPosition.grid(row=1, column=1)
@@ -659,46 +689,65 @@ Label_Utilities. grid(row=4, column=1, sticky="w")
 # Label_WA_curPosition["text"] = 'Position: {0}'.format(WA_Position)
 # Label_WA_curPosition.grid(row=10, column=1)
 
-label_showWA_Spells = Label(app, image = WA_img, bg = "White")
+frame_WAs = Frame(app)
+frame_WAs.configure(bg='White')
+frame_WAs.grid(row=5, column=1, rowspan = 6)
+
+Label_Spells = ttk.Label(master=frame_WAs, text="Spells:      ", style = "L4.TLabel")
+Label_Spells.grid(row=0, column=0, sticky="w", rowspan = 2)
+
+Label_CDs = ttk.Label(master=frame_WAs, text="Cooldowns:      ", style = "L4.TLabel")
+Label_CDs.grid(row=2, column=0, sticky="w", rowspan = 2)
+
+Label_Covenant = ttk.Label(master=frame_WAs, text="Covenant:      ", style = "L4.TLabel")
+Label_Covenant.grid(row=4, column=0, sticky="w", rowspan = 2)
+
+label_showWA_Spells = Label(frame_WAs, image = WA_img, bg = "White")
 label_showWA_Spells.image = WA_img
-label_showWA_Spells.grid(row=4, column=0, rowspan = 2, sticky="nsew") 
+label_showWA_Spells.grid(row=0, column=1, rowspan = 2, sticky="e") 
 
-label_showWA_CDs = Label(app, image = WA_img, bg = "White")
+label_showWA_CDs = Label(frame_WAs, image = WA_img, bg = "White")
 label_showWA_CDs.image = WA_img
-label_showWA_CDs.grid(row=6, column=0, rowspan = 2, sticky="nsew") 
+label_showWA_CDs.grid(row=2, column=1, rowspan = 2, sticky="nsew") 
 
-label_showWA_Covenant = Label(app, image = WA_img, bg = "White")
+label_showWA_Covenant = Label(frame_WAs, image = WA_img, bg = "White")
 label_showWA_Covenant.image = WA_img
-label_showWA_Covenant.grid(row=8, column=0, rowspan = 2, sticky="nsew") 
+label_showWA_Covenant.grid(row=4, column=1, rowspan = 2, sticky="nsew") 
+
+
+
+
+# Label_Spells = ttk.Label(master=app, text="Spells -> ", style = "L3.TLabel")
+# Label_Spells.grid(row=5, column=1, sticky="n", rowspan = 2)
+
+# label_showWA_Spells = Label(app, image = WA_img, bg = "White")
+# label_showWA_Spells.image = WA_img
+# label_showWA_Spells.grid(row=5, column=2, rowspan = 2, sticky="nsew") 
+
+# label_showWA_CDs = Label(app, image = WA_img, bg = "White")
+# label_showWA_CDs.image = WA_img
+# label_showWA_CDs.grid(row=7, column=1, rowspan = 2, sticky="nsew") 
+
+# label_showWA_Covenant = Label(app, image = WA_img, bg = "White")
+# label_showWA_Covenant.image = WA_img
+# label_showWA_Covenant.grid(row=9, column=1, rowspan = 2, sticky="nsew") 
     
 #-----Entries-----
 
-# style = ThemedStyle(root)
-# style.theme_names()
-# style.theme_use('scidgrey')  # white style
+#-----Style-----
+style = ThemedStyle(root)
+style.theme_names()
+style.theme_use('arc')  # white style
+style.configure('L.TButton', background='White', foreground='Black', font = 'Cambria 20')
+style.configure('TButton', background='White', foreground='Black', font = 'Cambria 14')
+style.configure('s.TButton', background='White', foreground='Black', font = 'Cambria 12')
+style.configure('Red.TCheckbutton', background='White', foreground='Black', font = 'Cambria 12')
+style.configure('L.TLabel', background='White', foreground='Black', font = 'Cambria 12')
+style.configure('L2.TLabel', background='White', foreground='Black', font = 'Cambria 18 underline')
+style.configure('L3.TLabel', background='White', foreground='Black', font = 'Cambria 12')
+style.configure('L4.TLabel', background='White', foreground='Black', font = 'Cambria 16')
+
 app.mainloop() 
-
-
-import os
-
-dir = '.'
-
-# for dirname, _, filenames in os.walk(dir):
-#     for filename in filenames:
-#         print(os.path.join(dirname, filename))
-        
-f = open("Config.dat", "r")
-# print(f.read()) 
-
-f.readline()
-
-
-for x in f:
-    if(x == "-Icon Directory"):
-        dir = a
-        
-    
-    print(x) 
 
 #-----Class Structured-----
 # from tkinter import Tk, Label, Button

@@ -1,0 +1,16 @@
+-----Icon Directory-----
+F:/WoWAddonDev/WoWIcons/Warrior/
+-----Spells-----
+Dragonroar Revenge Demoshout Ravager Thunderclap Shieldslam Devastate
+-----Cooldowns-----
+Shieldwall Laststand Impendingvictory Avatar Shieldblock Ignorepain Shockwave peacebloom
+-----Covenant-----
+AdaptiveSwarm peacebloom
+-----Hotkeys Spells-----
+["3","E","5","G","Q","1","2"]
+-----Hotkeys CDs-----
+[["LCONTROL","Q"], ["LALT","5"], ["LCONTROL", "4"], ["LSHIFT", "E"], ["LALT", "1"], ["4"], ["LCONTROL","3"], []]
+-----Hotkeys Covenant-----
+[["LCONTROL","F"], []]
+-----Hotkey Kick-----
+[["LSHIFT", "Q"]]

@@ -34,7 +34,6 @@ local RT = {
 	SelflessHealer	  = 85804,
 	FlashOfLight      = 19750,
 	EmpyreanPowerBuff = 326733,
-	FinalVerdictBuff = 337228,
 };
 setmetatable(RT, Paladin.spellMeta);
 
@@ -74,6 +73,9 @@ function Paladin:Retribution()
 	end
 
 	--- Spenders
+	if buff[RT.EmpyreanPowerBuff].up then
+		return RT.DivineStorm;
+	end
 	
 	if talents[RT.Seraphim] and holyPower >=3 then
 		MaxDps:GlowCooldown(RT.Seraphim, cooldown[RT.Seraphim].ready);
@@ -83,25 +85,32 @@ function Paladin:Retribution()
 		return RT.ExecutionSentence;
 	end
 
-	if holyPower >= 3 and targets =< 3 then
+	if holyPower >= 3 and targets < 2 then
 		return RT.TemplarsVerdict;
 	elseif buff[RT.DivinePurpose].up then
 		return RT.TemplarsVerdict;
 	end
 
-	-- Generators
-	if (cooldown[RT.HammerOfWrath].ready and buff[RT.FinalVerdictBuff].up) or (cooldown[RT.HammerOfWrath].ready and targetHp <= 20) or (cooldown[RT.HammerOfWrath].ready and buff[RT.AvengingWrath].up) then
-		return RT.HammerOfWrath;
+	if holyPower >= 3 and targets >= 2 then
+		return RT.DivineStorm;
 	end
-	
+	-- Generators
 	if cooldown[RT.WakeOfAshes].ready and holyPower <= 2 then
 		return RT.WakeOfAshes;
 	end
-		
+	
+	if (cooldown[RT.HammerOfWrath].ready and targetHp <= 20) or (cooldown[RT.HammerOfWrath].ready and buff[RT.AvengingWrath].up) then
+		return RT.HammerOfWrath;
+	end
+	
 	if cooldown[RT.BladeOfJustice].ready and holyPower <= 3 then
 		return RT.BladeOfJustice;
 	end
 	
+	--if targetHp <= 20 and cooldown[RT.HammerOfWrath].ready then
+	--	return RT.HammerOfWrath;
+	--end
+
 	if cooldown[RT.Judgment].ready and holyPower <= 4 then
 		return RT.Judgment;
 	end
@@ -110,4 +119,7 @@ function Paladin:Retribution()
 		return RT.CrusaderStrike;
 	end
 
+	if cooldown[RT.Consecration].ready then
+		return RT.Consecration;
+	end
 end

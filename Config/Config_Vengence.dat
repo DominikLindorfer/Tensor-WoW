@@ -1,0 +1,16 @@
+-----Icon Directory-----
+F:/WoWAddonDev/WoWIcons/DemonHunter/
+-----Spells-----
+Soulcleave Fracture Shear Immolationaura Fierybrand Spiritbomb Sigilofflame Throwglaive Sinfulbrand
+-----Cooldowns-----
+Demonspikes Metamorphasis Feldevastation Bulkextraction peacebloom
+-----Covenant-----
+AdaptiveSwarm peacebloom
+-----Hotkeys Spells-----
+["2","3","3","4","5","Q","E","F","G"]
+-----Hotkeys CDs-----
+[["LALT", "2"], ["LCONTROL", "Q"], ["LALT","1"], ["LALT","3"], []]
+-----Hotkeys Covenant-----
+[["LCONTROL","F"], []]
+-----Hotkey Kick-----
+[["LSHIFT", "Q"]]
