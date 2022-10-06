@@ -8,6 +8,10 @@ opencv-python = "*"
 pillow = "*"
 scikit-image = "*"
 numpy = "*"
+pynput = "*"
+ttkthemes = "*"
+ipykernel = "*"
+pywin32 = "*"
 
 [dev-packages]
 
