@@ -13,7 +13,7 @@ from ttkthemes import ThemedStyle
 #-----Main Window-----
 root = Tk()
 root.title("WoW Rot Bot")
-root.geometry("505x480")
+root.geometry("505x580")
 root.tk.call('wm', 'iconphoto', root._w, PhotoImage(file='LogoV3_icon.png'))
 
 app = Frame(root)
@@ -21,7 +21,7 @@ app.configure(bg='White')
 app.grid()
 
 col_count = 10
-row_count = 10
+row_count = 12
 
 for col in range(col_count):
     app.grid_columnconfigure(col, weight=1, minsize=200)
@@ -206,31 +206,33 @@ import os
 import ast 
 
 def get_config(Config_Filepath):
-   f = open(Config_Filepath, "r")
-   f.readline()
-   icon_dir = f.readline().rstrip() 
+    f = open(Config_Filepath, "r")
+    f.readline()
+    icon_dir = f.readline().rstrip() 
+    
+    f.readline()
+    spells = list(f.readline().rstrip().split(" "))
+    f.readline()
+    cooldowns = list(f.readline().rstrip().split(" "))
+    f.readline()
+    covenant = list(f.readline().rstrip().split(" "))
+    
+    f.readline()
+    hotkeys = ast.literal_eval(f.readline().rstrip()) 
+    f.readline()
+    hotkeys_CDs = ast.literal_eval(f.readline().rstrip()) 
+    f.readline()
+    hotkeys_covenant = ast.literal_eval(f.readline().rstrip())
+    
+    f.readline()
+    hotkeys_kick = ast.literal_eval(f.readline().rstrip())
    
-   f.readline()
-   spells = list(f.readline().rstrip().split(" "))
-   f.readline()
-   cooldowns = list(f.readline().rstrip().split(" "))
-   f.readline()
-   covenant = list(f.readline().rstrip().split(" "))
+    if f.readline() == '':
+        hotkeys_party = None
+    else:
+        hotkeys_party = ast.literal_eval(f.readline().rstrip())
    
-   f.readline()
-   hotkeys = ast.literal_eval(f.readline().rstrip()) 
-   f.readline()
-   hotkeys_CDs = ast.literal_eval(f.readline().rstrip()) 
-   f.readline()
-   hotkeys_covenant = ast.literal_eval(f.readline().rstrip())
-   
-   f.readline()
-   hotkeys_kick = ast.literal_eval(f.readline().rstrip())
-   
-   f.readline()
-   hotkeys_party = ast.literal_eval(f.readline().rstrip())
-   
-   return icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick, hotkeys_party
+    return icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick, hotkeys_party
 
 def get_Settings():
    f = open("Settings.dat", "r")
@@ -249,19 +251,26 @@ def get_Settings():
    f.readline()
    WA_Position_Kick = ast.literal_eval(f.readline().rstrip()) 
    
-   return WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant, WA_Position_Combat, WA_Position_Kick
+   f.readline()
+   WA_Position_Casting = ast.literal_eval(f.readline().rstrip()) 
+   
+   f.readline()
+   WA_Position_Party = ast.literal_eval(f.readline().rstrip()) 
+   
+   return WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant, WA_Position_Combat, WA_Position_Kick, WA_Position_Casting, WA_Position_Party
 
 WA_Position_Spells = [1480, 584, 28, 28]
 WA_Position_CDs = [1480, 682, 28, 28]
 WA_Position_Covenant = [1480, 782, 28, 28]
 WA_Position_Combat = [1480, 832, 5, 5]
 WA_Position_Kick = [1517, 832, 5, 5]
-WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant, WA_Position_Combat, WA_Position_Kick = get_Settings()
+WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant, WA_Position_Combat, WA_Position_Kick, WA_Position_Casting, WA_Position_Party = get_Settings()
 
 Spells_True = IntVar(value=1)
 CDs_True = IntVar(value=1)
-Covenant_True = IntVar(value=1)
-Kick_True = IntVar(value=1)
+Covenant_True = IntVar(value=0)
+Kick_True = IntVar(value=0)
+Healer_True = IntVar(value=0)
    
 def RotBot_main():
     #-----Main Rotation-Bot Routine-----
@@ -274,6 +283,7 @@ def RotBot_main():
     global CDs_True
     global Covenant_True
     global Kick_True
+    global Healer_True
     
     icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick, hotkeys_party = get_config(Config_Filepath)
     print(icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick, hotkeys_party)
@@ -373,16 +383,7 @@ def RotBot_main():
         print("(Score = ", printscreen.sum()/100, ")")
 
 
-        #-----Check if Character is in Casting -> Red (<100) = Casting, Green  (>100) = Not in Casting----
-        # printscreen = screen_record(1493, 798, 5, 5)
-        printscreen = screen_record(1376, 592, 5, 5)
-        printscreen = cv2.cvtColor(printscreen, cv2.COLOR_BGR2GRAY)
         
-        if(printscreen.sum()/100 > 45):
-            print("I'm Casting already! (Score = ", printscreen.sum()/100, ")")
-            time.sleep(random.uniform(0,0.2))
-            continue
-            # print("(Score = ", printscreen.sum()/100, ")")
 
 
         #-----Resize Images to icon_dim-----
@@ -407,49 +408,53 @@ def RotBot_main():
         printscreen_kick = screen_record(WA_Position_Kick[0], WA_Position_Kick[1], 5, 5)
         printscreen_kick = cv2.cvtColor(printscreen_kick, cv2.COLOR_BGR2GRAY)
         
-        #-----Healbot: Read Party Health-----        
-
-        frame_width = 40 
-        printscreen_party = ImageGrab.grab(bbox=(1417, 592, 1417 + frame_width*5, 592 + 1))
-        # printscreen.size
-        # printscreen.show() 
-    
-        party_health = []
-
-        for i in range(5):
-            p = printscreen_party.getpixel((i*frame_width, 0)) 
-
-            health = convert_rbg_to_int(p)
-            party_health.append([i, health])
-
-        party_health.sort(key=lambda x: x[1])
-        print(party_health)
-
         if(first_run):
             # printscreen_old = printscreen
             time.sleep(3)
             first_run = False
 
-        #-----Target Party Members-----
-        for health in party_health:
-            if health[1] == 0:
+        #-----Healbot: Read Party Health-----        
+        if(Healer_True.get()):
+            #-----Check if Character is in Casting -> Red (<100) = Casting, Green  (>100) = Not in Casting----
+            printscreen = screen_record(WA_Position_Casting[0], WA_Position_Casting[1], WA_Position_Casting[2], WA_Position_Casting[3])
+            printscreen = cv2.cvtColor(printscreen, cv2.COLOR_BGR2GRAY)
+            
+            if(printscreen.sum()/100 > 45):
+                print("I'm Casting already! (Score = ", printscreen.sum()/100, ")")
+                time.sleep(random.uniform(0,0.2))
                 continue
-            party_key = health[0]
-            break
 
-        # Skip if the lowest partymember is nearly max health
-        if health[1] / 1000 > 98:
-            print("Skipping: Party is Max Health!")
-            continue
+            frame_width = 40 
+            printscreen_party = ImageGrab.grab(bbox=(WA_Position_Party[0], WA_Position_Party[1], WA_Position_Party[0] + frame_width*5, WA_Position_Party[1] + 1))
+            party_health = []
 
-        print(hotkeys_party[party_key])
+            for i in range(5):
+                p = printscreen_party.getpixel((i*frame_width, 0)) 
 
-        # print(dict_hkeys["_" + hotkeys_party[party_key]])
-        
-        PressKey(dict_hkeys["_" + hotkeys_party[party_key]])
-        time.sleep(random.uniform(0,0.3))
-        ReleaseKey(dict_hkeys["_" + hotkeys_party[party_key]]) 
-        time.sleep(random.uniform(0,0.3))
+                health = convert_rbg_to_int(p)
+                party_health.append([i, health])
+
+            party_health.sort(key=lambda x: x[1])
+            print(party_health)
+
+            #-----Target Party Members-----
+            for health in party_health:
+                if health[1] == 0:
+                    continue
+                party_key = health[0]
+                break
+
+            # Skip if the lowest partymember is nearly max health
+            if health[1] / 1000 > 97:
+                print("Skipping: Party is Max Health!")
+                continue
+
+            print(hotkeys_party[party_key])
+            
+            PressKey(dict_hkeys["_" + hotkeys_party[party_key]])
+            time.sleep(random.uniform(0,0.3))
+            ReleaseKey(dict_hkeys["_" + hotkeys_party[party_key]]) 
+            time.sleep(random.uniform(0,0.3))
         
         #-----Compare Screen to saved Icons using SSIM-----
         scores = np.array([])
@@ -743,12 +748,13 @@ ttk.Checkbutton(app, text="Enable Spells", variable=Spells_True,style='Red.TChec
 ttk.Checkbutton(app, text="Enable CDs", variable=CDs_True, style='Red.TCheckbutton').grid(row=cb_row+1, column=0, sticky="w", padx=(15, 0))
 ttk.Checkbutton(app, text="Enable Covenant", variable=Kick_True, style='Red.TCheckbutton').grid(row=cb_row+2, column=0, sticky="w", padx=(15, 0))
 ttk.Checkbutton(app, text="Enable Kick", variable=Covenant_True, style='Red.TCheckbutton').grid(row=cb_row+3, column=0, sticky="w", padx=(15, 0))
+ttk.Checkbutton(app, text="I'm Healing?", variable=Healer_True, style='Red.TCheckbutton').grid(row=cb_row+4, column=0, sticky="w", padx=(15, 0))
 
 Button_showWA_Pic = ttk.Button(master=app, text="Get WA Pictures", command=lambda:showWA_Pic(label_showWA_Spells, label_showWA_CDs, label_showWA_Covenant, WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant), style = "s.TButton")
-Button_showWA_Pic.grid(row=7, column=0, sticky="nsew", padx=2, pady=2)
+Button_showWA_Pic.grid(row=8, column=0, sticky="nsew", padx=2, pady=2)
 
 Button_WAPosition = ttk.Button(master=app, text="Get WA Position", command=thread_findmouse, style = "s.TButton")
-Button_WAPosition.grid(row=8, column=0, sticky="nsew", padx=2, pady=2)
+Button_WAPosition.grid(row=9, column=0, sticky="nsew", padx=2, pady=2)
 
 # Button(app, text='Get What to use', command=var_states).grid(row=6, column=1, columnspan = 2)
 
@@ -770,7 +776,7 @@ Button_WAPosition.grid(row=8, column=0, sticky="nsew", padx=2, pady=2)
 Label_Utilities = ttk.Label(master=app, text="  Utilities  ", style = "L2.TLabel")
 Label_Utilities. grid(row=2, column=0, sticky="n")
 Label_WAPosition = ttk.Label(master=app, text="WeakAura Position on Screen", style = "L3.TLabel")
-Label_WAPosition.grid(row=9, column=0, sticky="n")
+Label_WAPosition.grid(row=10, column=0, sticky="n")
 
 Label_Filepath_Config = ttk.Label(master=app, text="Config File Path", style = "L3.TLabel", wraplength=200)
 Label_Filepath_Config.grid(row=3, column=1, sticky="n", rowspan = 2)
