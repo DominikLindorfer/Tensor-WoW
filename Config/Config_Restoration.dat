@@ -1,0 +1,18 @@
+-----Icon Directory-----
+C:/Users/Dominik/Programs/WoW-RotBot/WoWIcons/Druid/
+-----Spells-----
+Lifebloom Mangle Wildgrowth Regrowth Nourish AdaptiveSwarm 
+-----Cooldowns-----
+Swiftmend Ironbark Overgrowth Flourish Incarnation_TOL peacebloom
+-----Covenant-----
+AdaptiveSwarm peacebloom
+-----Hotkeys Spells-----
+["1","2","3","Q","E","4"]
+-----Hotkeys CDs-----
+[["5"], ["LSHIFT", "E"], ["LSHIFT", "F"], ["LCONTROL", "E"], ["LALT", "3"], []]
+-----Hotkeys Covenant-----
+[["LCONTROL","F"], []]
+-----Hotkey Kick-----
+[["LALT", "2"]]
+-----Hotkey Party-----
+["6", "7", "8","9","0"]

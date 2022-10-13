@@ -194,6 +194,14 @@ def screen_record(xoff = 260, yoff = 984, wx = 50, wy = 50):
     printscreen =  np.array(ImageGrab.grab(bbox=(xoff - wx, yoff - wy, xoff + wx, yoff + wy)))
     return printscreen
 
+def screen_record_all(xoff = 260, yoff = 984, wxl = 50, wyt = 50, wxr = 50, wyb = 50): 
+    last_time = time.time()
+    printscreen =  np.array(ImageGrab.grab(bbox=(xoff - wxl, yoff - wyt, xoff + wxr, yoff + wyb)))
+    return printscreen
+
+def convert_rbg_to_int(rgb_tuple):
+    return rgb_tuple[0] * 256*256 + rgb_tuple[1]*256 + rgb_tuple[0]
+
 import os
 import ast 
 
@@ -219,7 +227,10 @@ def get_config(Config_Filepath):
    f.readline()
    hotkeys_kick = ast.literal_eval(f.readline().rstrip())
    
-   return icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick
+   f.readline()
+   hotkeys_party = ast.literal_eval(f.readline().rstrip())
+   
+   return icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick, hotkeys_party
 
 def get_Settings():
    f = open("Settings.dat", "r")
@@ -264,8 +275,8 @@ def RotBot_main():
     global Covenant_True
     global Kick_True
     
-    icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick = get_config(Config_Filepath)
-    print(icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick)
+    icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick, hotkeys_party = get_config(Config_Filepath)
+    print(icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick, hotkeys_party)
     
     #-----Set Directory-----
     # icon_dir = "F:/WoWAddonDev/WoWIcons/Paladin/"
@@ -290,18 +301,28 @@ def RotBot_main():
     for spell in covenant:
         icons_covenant.append(cv2.imread(icon_dir + spell + ".jpg", 0))
     
-    print()
     print("Icons: ")
+
+    # for icon in icons:
+    #     if icon == None:
+    #         print("Cant Read an Icon!!!")
+    #         return 1
+
+    # for icon in icons_CDs:
+    #     if icon == None:
+    #         print("Cant Read an Icon!!!")
+    #         return 1
+
     print(icons, icons_CDs, icons_covenant)
     
     hotkeys = np.array(hotkeys)
     hotkeys_CDs = np.array(hotkeys_CDs)
     hotkeys_covenant = np.array(hotkeys_covenant)
+    hotkeys_party = np.array(hotkeys_party)
     
-    print(hotkeys, hotkeys_CDs, hotkeys_covenant)
+    print(hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_party)
     print(type(hotkeys))
     
-    # return True
     #-----List of Hotkeys-----
     # hotkeys = np.array(["3","F","1","2","G","Q"])
     # hotkeys_CDs = np.array([["LSHIFT", "3"], ["LSHIFT", "E"], ["4"], ["LSHIFT", "F"], ["E"],  ["LCONTROL", "3"], []])
@@ -324,6 +345,19 @@ def RotBot_main():
         # idx = idx+1
         # print (idx)
         
+
+        # printscreen = ImageGrab.grab(bbox=(xoff - wx, yoff - wy, xoff + wx, yoff + wy))
+        # printscreen.size
+
+        # coordinate = x, y = 5, 5
+        # printscreen.getpixel(coordinate)
+
+        # printscreen = ImageGrab.grab(bbox=None)
+        # 1 * 256*256 + 134*256 + 152
+
+        # printscreen = cv2.cvtColor(printscreen, cv2.COLOR_BGR2GRAY)
+
+
         #-----Read Screen and Compare to Icons-----
         
         #-----Check if Character is in Combat? -> Red (<100) = Combat, Green  (>100) = Not in Combat----
@@ -337,7 +371,20 @@ def RotBot_main():
             continue
 
         print("(Score = ", printscreen.sum()/100, ")")
+
+
+        #-----Check if Character is in Casting -> Red (<100) = Casting, Green  (>100) = Not in Casting----
+        # printscreen = screen_record(1493, 798, 5, 5)
+        printscreen = screen_record(1376, 592, 5, 5)
+        printscreen = cv2.cvtColor(printscreen, cv2.COLOR_BGR2GRAY)
         
+        if(printscreen.sum()/100 > 45):
+            print("I'm Casting already! (Score = ", printscreen.sum()/100, ")")
+            time.sleep(random.uniform(0,0.2))
+            continue
+            # print("(Score = ", printscreen.sum()/100, ")")
+
+
         #-----Resize Images to icon_dim-----
         # printscreen = screen_record(1480, 580, 28, 28)
         printscreen = screen_record(WA_Position_Spells[0], WA_Position_Spells[1], WA_Position_Spells[2], WA_Position_Spells[3])
@@ -359,201 +406,51 @@ def RotBot_main():
         
         printscreen_kick = screen_record(WA_Position_Kick[0], WA_Position_Kick[1], 5, 5)
         printscreen_kick = cv2.cvtColor(printscreen_kick, cv2.COLOR_BGR2GRAY)
+        
+        #-----Healbot: Read Party Health-----        
+
+        frame_width = 40 
+        printscreen_party = ImageGrab.grab(bbox=(1417, 592, 1417 + frame_width*5, 592 + 1))
+        # printscreen.size
+        # printscreen.show() 
+    
+        party_health = []
+
+        for i in range(5):
+            p = printscreen_party.getpixel((i*frame_width, 0)) 
+
+            health = convert_rbg_to_int(p)
+            party_health.append([i, health])
+
+        party_health.sort(key=lambda x: x[1])
+        print(party_health)
 
         if(first_run):
             # printscreen_old = printscreen
             time.sleep(3)
             first_run = False
-            
-        #-----Compare Screen to saved Icons using SSIM-----
-        scores = np.array([])
-        scores_CDs = np.array([])
-        scores_Covenant = np.array([])
-        
-        #-----stack ssim_score and hotkeys and sort descending afterwards-----
-        for icon in icons:
-            (score, diff) = compare_ssim(printscreen, icon, full=True)
-            scores = np.append(scores, score)
-            # scores = np.concatenate((scores, np.array([[score]])))
-            print("SSIM: {}".format(score))
-               
-        for icon in icons_CDs:
-            (score_CDs, diff) = compare_ssim(printscreen_CDs, icon, full=True)
-            scores_CDs = np.append(scores_CDs, score_CDs)
-            # scores = np.concatenate((scores, np.array([[score]])))
-            print("SSIM: {}".format(score))
-            
-        for icon in icons_covenant:
-            (score_Covenant, diff) = compare_ssim(printscreen_covenant, icon, full=True)
-            scores_Covenant = np.append(scores_Covenant, score_Covenant)
-        
-        sh_arr = np.stack((scores, hotkeys), axis=1)
-        sh_arr = sh_arr[np.argsort(sh_arr[:, 0])][::-1]
-        
-        sh_arr_CDs = np.stack((scores_CDs, hotkeys_CDs), axis=1)
-        sh_arr_CDs = sh_arr_CDs[np.argsort(sh_arr_CDs[:, 0])][::-1]
-        
-        sh_arr_Covenant = np.stack((scores_Covenant, hotkeys_covenant), axis=1)
-        sh_arr_Covenant = sh_arr_Covenant[np.argsort(sh_arr_Covenant[:, 0])][::-1]
 
-        #-----Select Direct Input Key to press-----
-        #-----Kick First if Casting-----
-        if(printscreen_kick.sum()/100 == 226):
-            print("KICK ACTIVATED!!!")
-            for key_kick in hotkeys_kick[0]:
-                PressKey(dict_hkeys["_" + key_kick])
-                time.sleep(random.uniform(0,0.1))
-            for key_kick in hotkeys_kick[0]:
-                ReleaseKey(dict_hkeys["_" + key_kick]) 
-                time.sleep(random.uniform(0,0.1))
-        
-        #-----Cooldowns First-----
-        if(sh_arr_CDs[0,0] > 0.1 and CDs_True.get()):
-            print(sh_arr_CDs[0,0])
-            for key_CDs in sh_arr_CDs[0,1]:
-                PressKey(dict_hkeys["_" + key_CDs])
-                time.sleep(random.uniform(0,0.4))
-                
-            for key_CDs in sh_arr_CDs[0,1]:
-                ReleaseKey(dict_hkeys["_" + key_CDs]) 
-                time.sleep(random.uniform(0,0.4))
-        
-        #-----Covenant Utility Second
-        if(sh_arr_Covenant[0,0] > 0.1 and Covenant_True.get()):
-            print(sh_arr_Covenant[0,1])
-            for key_Covenant in sh_arr_Covenant[0,1]:
-                PressKey(dict_hkeys["_" + key_Covenant])
-                time.sleep(random.uniform(0,0.4))
-                
-            for key_Covenant in sh_arr_Covenant[0,1]:
-                ReleaseKey(dict_hkeys["_" + key_Covenant]) 
-                time.sleep(random.uniform(0,0.4))
-        
-        # #-----Spells Third-----
-        if(Spells_True.get()):
-            print(sh_arr[0,1])
-            key = dict_hkeys["_" + sh_arr[0,1]]
-            time.sleep(random.uniform(0,0.4)) 
-            PressKey(key)
-            ReleaseKey(key)
-        
-        time.sleep(random.uniform(0,0.3))
-
-def HealBot_main():
-    #-----Main Heal-Bot Routine-----
-    # Copy from ReadPixels Project
-
-    first_run = True
-    global Config_Filepath
-    global WA_Position_Spells
-    global WA_Position_CDs
-    global WA_Position_Covenant
-    global Spells_True
-    global CDs_True
-    global Covenant_True
-    global Kick_True
-    
-    icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick = get_config(Config_Filepath)
-    print(icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick)
-    
-    #-----Set Directory-----
-    # icon_dir = "F:/WoWAddonDev/WoWIcons/Paladin/"
-    # icon_dir = "F:/WoWAddonDev/WoWIcons/Monk/"
-    
-    #-----List of Icons-----
-    # spells = ["bloodboil", "deathanddecay", "deathcoil", "deathstrike", "heartstrike", "marrowrend"]
-    # spells = ["bladeofjustice", "judgement", "templarsverdict", "wakeofashes", "hammerofwrath", "crusaderstrike", "flashheal"]
-    # spells = ["blessedhammer", "divinetoll", "judgement", "avengersshield", "hammerofwrath", "consecration"]
-    # spells = ["Tigerpalm" , "Blackout", "Kegsmash", "Rushingjadewind", "Cranekick", "Breath"]
-    icons = []
-    for spell in spells:
-        icons.append(cv2.imread(icon_dir + spell + ".jpg", 0))
-    
-    # cooldowns = ["ardentdefender", "avengingwrath", "shieldofvengeance", "acientkings", "wordofglory", "seraphim", "peacebloom"]
-    # cooldowns = ["Healingelixir", "Blackox", "Purifying", "Niuzao", "Celestial", "Weaponsoforder", "Fortifyingbrew", "Legkick", "peacebloom", "Touchofdeath"]
-    icons_CDs = []
-    for spell in cooldowns:
-        icons_CDs.append(cv2.imread(icon_dir + spell + ".jpg", 0))
-    
-    icons_covenant = []
-    for spell in covenant:
-        icons_covenant.append(cv2.imread(icon_dir + spell + ".jpg", 0))
-    
-    print()
-    print("Icons: ")
-    print(icons, icons_CDs, icons_covenant)
-    
-    hotkeys = np.array(hotkeys)
-    hotkeys_CDs = np.array(hotkeys_CDs)
-    hotkeys_covenant = np.array(hotkeys_covenant)
-    
-    print(hotkeys, hotkeys_CDs, hotkeys_covenant)
-    print(type(hotkeys))
-    
-    # return True
-    #-----List of Hotkeys-----
-    # hotkeys = np.array(["3","F","1","2","G","Q"])
-    # hotkeys_CDs = np.array([["LSHIFT", "3"], ["LSHIFT", "E"], ["4"], ["LSHIFT", "F"], ["E"],  ["LCONTROL", "3"], []])
-    # hotkeys = np.array(["1","2","E","F","4","3"])
-    # hotkeys_CDs = np.array([["LCONTROL", "Q"], ["LCONTROL", "E"], ["LALT", "2"], ["LALT", "1"], ["LALT", "3"],  ["LALT", "5"], ["LSHIFT", "4"], ["LSHIFT", "E"], [], ["G"]])
-    
-    #-----Set IconSize-----
-    icon_dim = (56,56)
-        
-    while True:
-        if stop == 1:
+        #-----Target Party Members-----
+        for health in party_health:
+            if health[1] == 0:
+                continue
+            party_key = health[0]
             break
-        
-        if(GetWindowText(GetForegroundWindow()) != "World of Warcraft"):
-            print("WoW is not the Focus Window!!")
-            time.sleep(0.5)
-            continue
-        
-        # global idx
-        # idx = idx+1
-        # print (idx)
-        
-        #-----Read Screen and Compare to Icons-----
-        
-        #-----Check if Character is in Combat? -> Red (<100) = Combat, Green  (>100) = Not in Combat----
-        # printscreen = screen_record(1493, 798, 5, 5)
-        printscreen = screen_record(WA_Position_Combat[0], WA_Position_Combat[1], 5, 5)
-        printscreen = cv2.cvtColor(printscreen, cv2.COLOR_BGR2GRAY)
-        
-        if(printscreen.sum()/100 < 35 or printscreen.sum()/100 > 45):
-            print("Not in Combat! (Score = ", printscreen.sum()/100, ")")
-            time.sleep(random.uniform(0,0.2))
+
+        # Skip if the lowest partymember is nearly max health
+        if health[1] / 1000 > 98:
+            print("Skipping: Party is Max Health!")
             continue
 
-        print("(Score = ", printscreen.sum()/100, ")")
-        
-        #-----Resize Images to icon_dim-----
-        # printscreen = screen_record(1480, 580, 28, 28)
-        printscreen = screen_record(WA_Position_Spells[0], WA_Position_Spells[1], WA_Position_Spells[2], WA_Position_Spells[3])
-        printscreen = cv2.resize(printscreen, icon_dim, interpolation = cv2.INTER_LINEAR)
-        printscreen = cv2.cvtColor(printscreen, cv2.COLOR_BGR2GRAY)
-        # cv2.imshow('image',printscreen)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
-        
-        # printscreen_CDs = screen_record(1480, 682, 28, 28)
-        printscreen_CDs = screen_record(WA_Position_CDs[0], WA_Position_CDs[1], WA_Position_CDs[2], WA_Position_CDs[3])
-        printscreen_CDs = cv2.cvtColor(printscreen_CDs, cv2.COLOR_BGR2GRAY)
-        # cv2.imshow('image',printscreen_CDs)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
-        
-        printscreen_covenant = screen_record(WA_Position_Covenant[0], WA_Position_Covenant[1], WA_Position_Covenant[2], WA_Position_Covenant[3])
-        printscreen_covenant = cv2.cvtColor(printscreen_covenant, cv2.COLOR_BGR2GRAY)
-        
-        printscreen_kick = screen_record(WA_Position_Kick[0], WA_Position_Kick[1], 5, 5)
-        printscreen_kick = cv2.cvtColor(printscreen_kick, cv2.COLOR_BGR2GRAY)
+        print(hotkeys_party[party_key])
 
-        if(first_run):
-            # printscreen_old = printscreen
-            time.sleep(3)
-            first_run = False
-            
+        # print(dict_hkeys["_" + hotkeys_party[party_key]])
+        
+        PressKey(dict_hkeys["_" + hotkeys_party[party_key]])
+        time.sleep(random.uniform(0,0.3))
+        ReleaseKey(dict_hkeys["_" + hotkeys_party[party_key]]) 
+        time.sleep(random.uniform(0,0.3))
+        
         #-----Compare Screen to saved Icons using SSIM-----
         scores = np.array([])
         scores_CDs = np.array([])
@@ -564,13 +461,13 @@ def HealBot_main():
             (score, diff) = compare_ssim(printscreen, icon, full=True)
             scores = np.append(scores, score)
             # scores = np.concatenate((scores, np.array([[score]])))
-            print("SSIM: {}".format(score))
-               
+            # print("SSIM: {}".format(score))
+         
         for icon in icons_CDs:
             (score_CDs, diff) = compare_ssim(printscreen_CDs, icon, full=True)
             scores_CDs = np.append(scores_CDs, score_CDs)
             # scores = np.concatenate((scores, np.array([[score]])))
-            print("SSIM: {}".format(score))
+            # print("SSIM: {}".format(score))
             
         for icon in icons_covenant:
             (score_Covenant, diff) = compare_ssim(printscreen_covenant, icon, full=True)
@@ -584,6 +481,9 @@ def HealBot_main():
         
         sh_arr_Covenant = np.stack((scores_Covenant, hotkeys_covenant), axis=1)
         sh_arr_Covenant = sh_arr_Covenant[np.argsort(sh_arr_Covenant[:, 0])][::-1]
+        
+        print(sh_arr[0,1])
+        print(sh_arr_CDs[0,1])
 
         #-----Select Direct Input Key to press-----
         #-----Kick First if Casting-----
@@ -598,35 +498,36 @@ def HealBot_main():
         
         #-----Cooldowns First-----
         if(sh_arr_CDs[0,0] > 0.1 and CDs_True.get()):
-            print(sh_arr_CDs[0,0])
+            # print(sh_arr_CDs[0,0])
             for key_CDs in sh_arr_CDs[0,1]:
                 PressKey(dict_hkeys["_" + key_CDs])
-                time.sleep(random.uniform(0,0.4))
+                time.sleep(random.uniform(0,0.5))
                 
             for key_CDs in sh_arr_CDs[0,1]:
                 ReleaseKey(dict_hkeys["_" + key_CDs]) 
-                time.sleep(random.uniform(0,0.4))
+                time.sleep(random.uniform(0,0.5))
         
         #-----Covenant Utility Second
         if(sh_arr_Covenant[0,0] > 0.1 and Covenant_True.get()):
-            print(sh_arr_Covenant[0,1])
+            # print(sh_arr_Covenant[0,1])
             for key_Covenant in sh_arr_Covenant[0,1]:
                 PressKey(dict_hkeys["_" + key_Covenant])
-                time.sleep(random.uniform(0,0.4))
+                time.sleep(random.uniform(0,0.5))
                 
             for key_Covenant in sh_arr_Covenant[0,1]:
                 ReleaseKey(dict_hkeys["_" + key_Covenant]) 
-                time.sleep(random.uniform(0,0.4))
+                time.sleep(random.uniform(0,0.5))
         
         # #-----Spells Third-----
         if(Spells_True.get()):
-            print(sh_arr[0,1])
+            # print(sh_arr[0,1])
             key = dict_hkeys["_" + sh_arr[0,1]]
-            time.sleep(random.uniform(0,0.4)) 
+            time.sleep(random.uniform(0,0.5)) 
             PressKey(key)
             ReleaseKey(key)
         
-        time.sleep(random.uniform(0,0.3))
+        time.sleep(random.uniform(0,0.4))
+
 
 def start_RotBot():
     # Assign global variable and initialize value
