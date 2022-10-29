@@ -299,19 +299,31 @@ def RotBot_main():
     # spells = ["Tigerpalm" , "Blackout", "Kegsmash", "Rushingjadewind", "Cranekick", "Breath"]
     icons = []
     for spell in spells:
-        icons.append(cv2.imread(icon_dir + spell + ".jpg", 0))
+        icon = cv2.imread(icon_dir + spell + ".jpg", 0)
+        
+        if icon is None:
+            print("Can't read: ", spell)
+            return False
+
+        icons.append(icon)
     
     # cooldowns = ["ardentdefender", "avengingwrath", "shieldofvengeance", "acientkings", "wordofglory", "seraphim", "peacebloom"]
     # cooldowns = ["Healingelixir", "Blackox", "Purifying", "Niuzao", "Celestial", "Weaponsoforder", "Fortifyingbrew", "Legkick", "peacebloom", "Touchofdeath"]
     icons_CDs = []
     for spell in cooldowns:
+        icon = cv2.imread(icon_dir + spell + ".jpg", 0)
+        
+        if icon is None:
+            print("Can't read: ", spell)
+            return False
+        
         icons_CDs.append(cv2.imread(icon_dir + spell + ".jpg", 0))
     
     icons_covenant = []
     for spell in covenant:
         icons_covenant.append(cv2.imread(icon_dir + spell + ".jpg", 0))
     
-    print("Icons: ")
+    # print("Icons: ")
 
     # for icon in icons:
     #     if icon == None:
@@ -322,7 +334,7 @@ def RotBot_main():
     #     if icon == None:
     #         print("Cant Read an Icon!!!")
     #         return 1
-
+    
     print(icons, icons_CDs, icons_covenant)
     
     hotkeys = np.array(hotkeys)
@@ -472,7 +484,7 @@ def RotBot_main():
             (score_CDs, diff) = compare_ssim(printscreen_CDs, icon, full=True)
             scores_CDs = np.append(scores_CDs, score_CDs)
             # scores = np.concatenate((scores, np.array([[score]])))
-            # print("SSIM: {}".format(score))
+            print("SSIM: {}".format(score_CDs))
             
         for icon in icons_covenant:
             (score_Covenant, diff) = compare_ssim(printscreen_covenant, icon, full=True)

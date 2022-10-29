@@ -1,15 +1,15 @@
 -----Icon Directory-----
 C:/Users/Dominik/Programs/WoW-RotBot/WoWIcons/Deathknight/
 -----Spells-----
-Hearthstrike Marrowend Bloodboil Deathanddecay Deathstrike Consumption
+Hearthstrike Marrowend Deathscaress Bloodboil Deathanddecay Deathstrike Tombstone 
 -----Cooldowns-----
-Dancingruneweapon peacebloom 
+Vampiricblood Lichborn Dancingruneweapon Iceboundfortitude Antimagicshell Raisedead Empowerruneweapon peacebloom 
 -----Covenant-----
 Deathsdue peacebloom
 -----Hotkeys Spells-----
-["1","2","4","5","Q","6"]
+["1","2","3","4","5","Q","F"]
 -----Hotkeys CDs-----
-[["LCONTROL", "3"], []]
+[["LCONTROL", "1"], ["LCONTROL", "2"], ["LCONTROL", "3"], ["LCONTROL", "4"], ["LCONTROL", "5"], ["LSHIFT", "5"], ["LALT", "4"],[]]
 -----Hotkeys Covenant-----
 [["LALT", "5"], []]
 -----Hotkey Kick-----
