@@ -49,7 +49,6 @@ label = Label(app, image = photo)
 label.image = photo
 label.grid(row=0, column=0, columnspan = 2)
 
-
 config_filepath = "C:/Users/Dominik/Programs/WoW-RotBot/Config/Config.dat"
 settings_path = "C:/Users/Dominik/Programs/WoW-RotBot/Settings.dat"
 
@@ -100,10 +99,11 @@ Covenant_True = IntVar(value=0)
 Kick_True = IntVar(value=0)
 Healer_True = IntVar(value=0)
    
-def RotBot_main():
+def RotBot_main(filepath):
     #-----Main Rotation-Bot Routine-----
     first_run = True
-    global config_filepath
+    # global config_filepath
+    config_filepath = filepath
     global WA_Position_Spells
     global WA_Position_CDs
     global WA_Position_Covenant
@@ -113,6 +113,8 @@ def RotBot_main():
     global Kick_True
     global Healer_True
     
+    print("RotBot Main Function, Filepath: ", filepath)
+
     icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick, hotkeys_party = get_config(config_filepath)
     print(icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick, hotkeys_party)
     
@@ -383,10 +385,11 @@ def start_RotBot():
     global WA_Position_Spells
     global WA_Position_CDs
     global WA_Position_Covenant
-    # print(config_filepath)
+    print(config_filepath)
     # Create and launch a thread 
-    t = Thread(target = RotBot_main)
-    t.start()
+    # t = Thread(target = RotBot_main)
+    # t = Thread(target = lambda:RotBot_main(filepath=config_filepath))
+    # t.start()
 
 # #-----Show the Weak-Aura Image in the App-----
 # #-----Find WA Position on Screen (click on anchor in the middle)-----

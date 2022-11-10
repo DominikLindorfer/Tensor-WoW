@@ -3,6 +3,9 @@ from tkinter.filedialog import askopenfilename, asksaveasfilename
 #-----Find Path of the Config File-----
 
 def get_config(config_filepath):
+
+    print("Getting Config from Path: ", config_filepath)
+
     f = open(config_filepath, "r")
     f.readline()
     icon_dir = f.readline().rstrip() 
