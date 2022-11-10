@@ -5,35 +5,42 @@ Created on Mon Jan 11 10:42:05 2021
 @author: dl
 GUI for WoW Rotation Bot
 """
+
+#-----TKInter-----
 from tkinter import * 
 from threading import Thread
 from win32gui import GetWindowText, GetForegroundWindow
-from ttkthemes import ThemedStyle
 
-#-----Main Window-----
-root = Tk()
-root.title("WoW Rot Bot")
-root.geometry("505x580")
-root.tk.call('wm', 'iconphoto', root._w, PhotoImage(file='LogoV3_icon.png'))
-
-app = Frame(root)
-app.configure(bg='White')
-app.grid()
-
-col_count = 10
-row_count = 12
-
-for col in range(col_count):
-    app.grid_columnconfigure(col, weight=1, minsize=200)
-
-for row in range(row_count):
-    app.grid_rowconfigure(row, weight=1, minsize=25)
-
-# #-----Set Logo on Top-----
 import PIL
 import PIL.Image as Image
 import PIL.ImageTk as ImageTk
 
+#-----Style-----
+from lib.set_style import set_app_style
+
+#-----Get Mouse Position------
+from lib.get_mouse_position import thread_findmouse
+
+#-----Get Settings & Configs -----
+from lib.settings import get_Settings, get_config, open_configfile, save_file
+
+#-----Get Screen Functions-----
+from lib.screen_functions import showWA_Pic, screen_record, convert_rbg_to_int 
+
+#-----Direckeys-----
+from lib.directkeys import PressKey, ReleaseKey, W, A, S, D, dict_hkeys
+
+#-----Setup TKInter Root and App-----
+from lib.setup_windows import setup_app, setup_root, setup_buttons
+
+#-----Main Window-----
+root = Tk()
+setup_root(root)
+
+app = Frame(root)
+setup_app(app)
+
+# -----Set Logo on Top-----
 fp = open("LogoV3.png","rb")
 image = PIL.Image.open(fp)
 photo = PIL.ImageTk.PhotoImage(image)
@@ -42,98 +49,9 @@ label = Label(app, image = photo)
 label.image = photo
 label.grid(row=0, column=0, columnspan = 2)
 
-#-----Find WA Position on Screen (click on anchor in the middle)-----
-from pynput import mouse    
-from pynput import keyboard
-from pynput.keyboard import Key
 
-def on_move(x, y):
-    Label_WAPosition["text"] = 'Pointer moved to {0}'.format((x, y))
-    print('Pointer moved to {0}'.format((x, y)))
-
-def on_click(x, y, button, pressed):
-    print('{0} at {1}'.format('Pressed' if pressed else 'Released',(x, y)))
-    if not pressed:
-        # Stop listener
-        return False
-
-# def on_click(x, y, button, pressed):
-#     btn = button.name
-
-#     if btn == 'left':
-#         print('Left if Pressed')
-#         # ====== < Handle Pressed or released Event ====== > # 
-#         if pressed:
-#             print('Do somethin when Pressed with LEft')
-#         else:
-#             print('LEFT is Released')
-#     elif btn == 'right':
-#         print('Right BTN was pressed ')
-#         # ====== < Handle Pressed or released Event ====== > # 
-#         if not pressed:
-#             print('right Button is released')
-#         else:
-#             pass
-
-#working below!
-# def on_click(x, y, button, pressed):
-#     print(button)  # Print button to see which button of mouse was pressed
-#     print('{0} at {1}'.format(
-#         'Pressed' if pressed else 'Released',
-#         (x, y)))
-    
-# listener = mouse.Listener(on_click=on_click)
-# listener.start()
-# listener.stop()
-
-def on_scroll(x, y, dx, dy):
-    print('Scrolled {0} at {1s}'.format('down' if dy < 0 else 'up',(x, y)))
-
-# Collect events until released
-def find_mouseposition():
-    with mouse.Listener(on_move=on_move, on_click=on_click, on_scroll=on_scroll) as listener:
-        listener.join()
-        
-def thread_findmouse():
-    t = Thread(target = find_mouseposition)
-    t.start()
-
-#-----Find Path of the Config File-----
-import tkinter as tk
-from tkinter.filedialog import askopenfilename, asksaveasfilename
-
-Config_Filepath = "C:/Users/Dominik/Programs/WoW-RotBot/Config/Config.dat"
-def open_configfile():
-
-    """Open a file for editing."""
-    filepath = askopenfilename(
-        filetypes=[("All Files", "*.*")]
-    )
-
-    if not filepath:
-        return
-    
-    Label_Filepath_Config["text"] = filepath
-    global Config_Filepath
-    Config_Filepath = filepath
-    print(Config_Filepath)
-        
-    return filepath
-
-def save_file():
-
-    """Save the current file as a new file."""
-    filepath = asksaveasfilename(
-        defaultextension="txt",
-        filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")],
-    )
-
-    if not filepath:
-        return
-
-    with open(filepath, "w") as output_file:
-        text = txt_edit.get("1.0", tk.END)
-        output_file.write(text)
+config_filepath = "C:/Users/Dominik/Programs/WoW-RotBot/Config/Config.dat"
+settings_path = "C:/Users/Dominik/Programs/WoW-RotBot/Settings.dat"
 
 #-----Actual Bot Main Routine-----
 def stop():
@@ -167,104 +85,14 @@ import random
 # from skimage.measure import compare_ssim
 from skimage.metrics import structural_similarity as compare_ssim
 
-from directkeys import PressKey, ReleaseKey, W, A, S, D, dict_hkeys
 
-#-----Read Screen Image-----
-def screen_record_show(xoff = 260, yoff = 984, wx = 50, wy = 50): 
-    last_time = time.time()
-    while(True):
-        # printscreen =  np.array(ImageGrab.grab(bbox=(0,40,800,640)))
-        # top = 1920
-        # bot = 1080
-        # xoff = 260 #960
-        # yoff = 984
-        # wx = 50
-        # wy = 50
-        
-        printscreen =  np.arra3y(ImageGrab.grab(bbox=(xoff - wx, yoff - wy, xoff + wx, yoff + wy)))
-        print('loop took {} seconds'.format(time.time()-last_time))
-        last_time = time.time()
-        cv2.imshow('window',cv2.cvtColor(printscreen, cv2.COLOR_BGR2RGB))
-        if cv2.waitKey(25) & 0xFF == ord('q'):
-            cv2.destroyAllWindows()
-            break
-
-def screen_record(xoff = 260, yoff = 984, wx = 50, wy = 50): 
-    last_time = time.time()
-    printscreen =  np.array(ImageGrab.grab(bbox=(xoff - wx, yoff - wy, xoff + wx, yoff + wy)))
-    return printscreen
-
-def screen_record_all(xoff = 260, yoff = 984, wxl = 50, wyt = 50, wxr = 50, wyb = 50): 
-    last_time = time.time()
-    printscreen =  np.array(ImageGrab.grab(bbox=(xoff - wxl, yoff - wyt, xoff + wxr, yoff + wyb)))
-    return printscreen
-
-def convert_rbg_to_int(rgb_tuple):
-    return rgb_tuple[0] * 256*256 + rgb_tuple[1]*256 + rgb_tuple[0]
-
-import os
-import ast 
-
-def get_config(Config_Filepath):
-    f = open(Config_Filepath, "r")
-    f.readline()
-    icon_dir = f.readline().rstrip() 
-    
-    f.readline()
-    spells = list(f.readline().rstrip().split(" "))
-    f.readline()
-    cooldowns = list(f.readline().rstrip().split(" "))
-    f.readline()
-    covenant = list(f.readline().rstrip().split(" "))
-    
-    f.readline()
-    hotkeys = ast.literal_eval(f.readline().rstrip()) 
-    f.readline()
-    hotkeys_CDs = ast.literal_eval(f.readline().rstrip()) 
-    f.readline()
-    hotkeys_covenant = ast.literal_eval(f.readline().rstrip())
-    
-    f.readline()
-    hotkeys_kick = ast.literal_eval(f.readline().rstrip())
-   
-    if f.readline() == '':
-        hotkeys_party = None
-    else:
-        hotkeys_party = ast.literal_eval(f.readline().rstrip())
-   
-    return icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick, hotkeys_party
-
-def get_Settings():
-   f = open("Settings.dat", "r")
-   f.readline()
-   WA_Position_Spells = ast.literal_eval(f.readline().rstrip()) 
-   
-   f.readline()
-   WA_Position_CDs = ast.literal_eval(f.readline().rstrip()) 
-   
-   f.readline()
-   WA_Position_Covenant = ast.literal_eval(f.readline().rstrip()) 
-   
-   f.readline()
-   WA_Position_Combat = ast.literal_eval(f.readline().rstrip()) 
-   
-   f.readline()
-   WA_Position_Kick = ast.literal_eval(f.readline().rstrip()) 
-   
-   f.readline()
-   WA_Position_Casting = ast.literal_eval(f.readline().rstrip()) 
-   
-   f.readline()
-   WA_Position_Party = ast.literal_eval(f.readline().rstrip()) 
-   
-   return WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant, WA_Position_Combat, WA_Position_Kick, WA_Position_Casting, WA_Position_Party
 
 WA_Position_Spells = [1480, 584, 28, 28]
 WA_Position_CDs = [1480, 682, 28, 28]
 WA_Position_Covenant = [1480, 782, 28, 28]
 WA_Position_Combat = [1480, 832, 5, 5]
 WA_Position_Kick = [1517, 832, 5, 5]
-WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant, WA_Position_Combat, WA_Position_Kick, WA_Position_Casting, WA_Position_Party = get_Settings()
+WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant, WA_Position_Combat, WA_Position_Kick, WA_Position_Casting, WA_Position_Party = get_Settings(settings_path)
 
 Spells_True = IntVar(value=1)
 CDs_True = IntVar(value=1)
@@ -275,7 +103,7 @@ Healer_True = IntVar(value=0)
 def RotBot_main():
     #-----Main Rotation-Bot Routine-----
     first_run = True
-    global Config_Filepath
+    global config_filepath
     global WA_Position_Spells
     global WA_Position_CDs
     global WA_Position_Covenant
@@ -285,7 +113,7 @@ def RotBot_main():
     global Kick_True
     global Healer_True
     
-    icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick, hotkeys_party = get_config(Config_Filepath)
+    icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick, hotkeys_party = get_config(config_filepath)
     print(icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick, hotkeys_party)
     
     #-----Set Directory-----
@@ -551,55 +379,34 @@ def start_RotBot():
     global stop
     stop = 0
     
-    global Config_Filepath
+    global config_filepath
     global WA_Position_Spells
     global WA_Position_CDs
     global WA_Position_Covenant
-    # print(Config_Filepath)
+    # print(config_filepath)
     # Create and launch a thread 
     t = Thread(target = RotBot_main)
     t.start()
 
-#-----Show the Weak-Aura Image in the App-----
-#-----Find WA Position on Screen (click on anchor in the middle)-----
-from pynput import mouse    
+# #-----Show the Weak-Aura Image in the App-----
+# #-----Find WA Position on Screen (click on anchor in the middle)-----
+# from pynput import mouse    
 
-def on_move(x, y):
-    Label_WAPosition["text"] = 'Pointer moved to {0}'.format((x, y))
-    print('Pointer moved to {0}'.format((x, y)))
+# def on_move(x, y):
+#     Label_WAPosition["text"] = 'Pointer moved to {0}'.format((x, y))
+#     print('Pointer moved to {0}'.format((x, y)))
 
-def on_click(x, y, button, pressed):
-    print('{0} at {1}'.format('Pressed' if pressed else 'Released',(x, y)))
-    if not pressed:
-        # Stop listener
-        return False
+# def on_click(x, y, button, pressed):
+#     print('{0} at {1}'.format('Pressed' if pressed else 'Released',(x, y)))
+#     if not pressed:
+#         # Stop listener
+#         return False
 
-def on_scroll(x, y, dx, dy):
-    print('Scrolled {0} at {1}'.format('down' if dy < 0 else 'up',(x, y)))
+# def on_scroll(x, y, dx, dy):
+#     print('Scrolled {0} at {1}'.format('down' if dy < 0 else 'up',(x, y)))
 
 
-def showWA_Pic(labelname_Spells, labelname_CDs, labelname_Covenants, WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant):
-    WA_img_Spells = screen_record(WA_Position_Spells[0], WA_Position_Spells[1], WA_Position_Spells[2], WA_Position_Spells[3])
-    WA_img_Spells = cv2.cvtColor(WA_img_Spells, cv2.COLOR_BGR2GRAY)
-    WA_img_CDs = screen_record(WA_Position_CDs[0], WA_Position_CDs[1], WA_Position_CDs[2], WA_Position_CDs[3])
-    WA_img_CDs = cv2.cvtColor(WA_img_CDs, cv2.COLOR_BGR2GRAY)
-    WA_img_Covenant = screen_record(WA_Position_Covenant[0], WA_Position_Covenant[1], WA_Position_Covenant[2], WA_Position_Covenant[3])
-    WA_img_Covenant = cv2.cvtColor(WA_img_Covenant, cv2.COLOR_BGR2GRAY)
-    
-    
-    WA_img_Spells = PIL.Image.fromarray(WA_img_Spells)
-    WA_img_Spells = ImageTk.PhotoImage(image=WA_img_Spells) 
-    WA_img_CDs = PIL.Image.fromarray(WA_img_CDs)
-    WA_img_CDs = ImageTk.PhotoImage(image=WA_img_CDs)
-    WA_img_Covenant = PIL.Image.fromarray(WA_img_Covenant)
-    WA_img_Covenant = ImageTk.PhotoImage(image=WA_img_Covenant) 
-    
-    labelname_Spells.configure(image=WA_img_Spells)
-    labelname_Spells.image = WA_img_Spells
-    labelname_CDs.configure(image=WA_img_CDs)
-    labelname_CDs.image = WA_img_CDs
-    labelname_Covenants.configure(image=WA_img_Covenant)
-    labelname_Covenants.image = WA_img_Covenant
+
 
 WA_Position = WA_Position_Covenant
 WA_img = screen_record(WA_Position[0], WA_Position[1], WA_Position[2], WA_Position[3])
@@ -608,33 +415,13 @@ WA_img = cv2.cvtColor(WA_img, cv2.COLOR_BGR2GRAY)
 WA_img = PIL.Image.fromarray(WA_img)
 WA_img = ImageTk.PhotoImage(image=WA_img) 
 
-def move_WAleft():
-    WA_Position[0] = WA_Position[0] + 1
-    Button_showWA_Pic.invoke()
-    Label_WA_curPosition["text"] = 'Position: {0}'.format(WA_Position)
-
-def move_WAright():
-    WA_Position[0] = WA_Position[0] - 1
-    Button_showWA_Pic.invoke()
-    Label_WA_curPosition["text"] = 'Position: {0}'.format(WA_Position)
-    
-def move_WAup():
-    WA_Position[1] = WA_Position[1] + 1
-    Button_showWA_Pic.invoke()
-    Label_WA_curPosition["text"] = 'Position: {0}'.format(WA_Position)
-    
-def move_WAdown():
-    WA_Position[1] = WA_Position[1] - 1
-    Button_showWA_Pic.invoke()
-    Label_WA_curPosition["text"] = 'Position: {0}'.format(WA_Position)
-    
 def Get_SSIM_values():
     #-----Main Rotation-Bot Routine-----
-    global Config_Filepath
+    global config_filepath
     global WA_Position_Spells
     global WA_Position_CDs
     
-    icon_dir, spells, cooldowns, hotkeys, hotkeys_CDs = get_config(Config_Filepath)
+    icon_dir, spells, cooldowns, hotkeys, hotkeys_CDs = get_config(config_filepath)
     print(icon_dir, spells, cooldowns, hotkeys, hotkeys_CDs)
 
     icons = []
@@ -697,7 +484,7 @@ def Get_SSIM_values():
 #     global stop
 #     stop = 0
     
-#     global Config_Filepath
+#     global config_filepath
 #     global WA_Position_Spells
 #     WA_Position_Spells = WA_Position
     
@@ -742,31 +529,7 @@ def var_states():
    print("%d %d %d" % (Spells_True.get(), CDs_True.get(), Covenant_True.get()))
 
 
-#-----Buttons-----     
 from tkinter import ttk
-# Button_Start = Button(app, bg="#00FF00", fg="Black", text="Start", font = helv36, command=start_RotBot)
-# Button_Stop = Button(app, bg="Red", fg="Black", text="Stop", font = helv36, command=stop)
-
-Button_Start = ttk.Button(app, text="Start", command=start_RotBot, style="L.TButton")
-Button_Stop = ttk.Button(app, text="Stop", command=stop, style="L.TButton")
-Button_Start.grid(row=1, column=0,sticky="nsew", padx=2, pady=2)
-Button_Stop.grid(row=1, column=1,sticky="nsew", padx=2, pady=2)
-
-Button_OpenConfigFile = ttk.Button(app, text="Open Config File", command=open_configfile, style="L2.TButton")
-Button_OpenConfigFile.grid(row=2, column=1, sticky="nsew", padx=2, pady=2)
-
-cb_row = 3
-ttk.Checkbutton(app, text="Enable Spells", variable=Spells_True,style='Red.TCheckbutton').grid(row=cb_row, column=0, sticky="w", padx=(15, 0))
-ttk.Checkbutton(app, text="Enable CDs", variable=CDs_True, style='Red.TCheckbutton').grid(row=cb_row+1, column=0, sticky="w", padx=(15, 0))
-ttk.Checkbutton(app, text="Enable Covenant", variable=Kick_True, style='Red.TCheckbutton').grid(row=cb_row+2, column=0, sticky="w", padx=(15, 0))
-ttk.Checkbutton(app, text="Enable Kick", variable=Covenant_True, style='Red.TCheckbutton').grid(row=cb_row+3, column=0, sticky="w", padx=(15, 0))
-ttk.Checkbutton(app, text="I'm Healing?", variable=Healer_True, style='Red.TCheckbutton').grid(row=cb_row+4, column=0, sticky="w", padx=(15, 0))
-
-Button_showWA_Pic = ttk.Button(master=app, text="Get WA Pictures", command=lambda:showWA_Pic(label_showWA_Spells, label_showWA_CDs, label_showWA_Covenant, WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant), style = "s.TButton")
-Button_showWA_Pic.grid(row=8, column=0, sticky="nsew", padx=2, pady=2)
-
-Button_WAPosition = ttk.Button(master=app, text="Get WA Position", command=thread_findmouse, style = "s.TButton")
-Button_WAPosition.grid(row=9, column=0, sticky="nsew", padx=2, pady=2)
 
 # Button(app, text='Get What to use', command=var_states).grid(row=6, column=1, columnspan = 2)
 
@@ -792,6 +555,10 @@ Label_WAPosition.grid(row=10, column=0, sticky="n")
 
 Label_Filepath_Config = ttk.Label(master=app, text="Config File Path", style = "L3.TLabel", wraplength=200)
 Label_Filepath_Config.grid(row=3, column=1, sticky="n", rowspan = 2)
+
+showWA = lambda:showWA_Pic(label_showWA_Spells, label_showWA_CDs, label_showWA_Covenant, WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant)
+variables = Spells_True, CDs_True, Kick_True, Covenant_True, Healer_True
+setup_buttons(app, start_RotBot, stop, [open_configfile, config_filepath, Label_Filepath_Config], variables, showWA, thread_findmouse)
 
 # Label_WAPosition = Label(master=app, text="WeakAura Position on Screen")
 # Label_WAPosition.grid(row=1, column=1)
@@ -844,18 +611,7 @@ label_showWA_Covenant.grid(row=4, column=1, rowspan = 2, sticky="nsew")
 #-----Entries-----
 
 #-----Style-----
-style = ThemedStyle(root)
-style.theme_names()
-style.theme_use('arc')  # white style
-style.configure('L.TButton', background='White', foreground='Black', font = 'Cambria 20')
-style.configure('TButton', background='White', foreground='Black', font = 'Cambria 14')
-style.configure('s.TButton', background='White', foreground='Black', font = 'Cambria 12')
-style.configure('Red.TCheckbutton', background='White', foreground='Black', font = 'Cambria 12')
-style.configure('L.TLabel', background='White', foreground='Black', font = 'Cambria 12')
-style.configure('L2.TLabel', background='White', foreground='Black', font = 'Cambria 18 underline')
-style.configure('L3.TLabel', background='White', foreground='Black', font = 'Cambria 12')
-style.configure('L4.TLabel', background='White', foreground='Black', font = 'Cambria 16')
-
+set_app_style(root)
 app.mainloop() 
 
 #-----Class Structured-----

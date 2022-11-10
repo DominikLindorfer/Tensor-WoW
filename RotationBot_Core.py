@@ -13,7 +13,7 @@ import cv2
 import time
 import random
 from skimage.measure import compare_ssim
-from directkeys import PressKey, ReleaseKey, W, A, S, D, dict_hkeys
+from lib.directkeys import PressKey, ReleaseKey, W, A, S, D, dict_hkeys
 
 # #-----Find WA Position on Screen (click on anchor in the middle-----)
 # from pynput import mouse    
