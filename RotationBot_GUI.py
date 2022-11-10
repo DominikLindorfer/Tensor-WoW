@@ -826,7 +826,6 @@ label_showWA_Covenant.grid(row=4, column=1, rowspan = 2, sticky="nsew")
 
 
 
-
 # Label_Spells = ttk.Label(master=app, text="Spells -> ", style = "L3.TLabel")
 # Label_Spells.grid(row=5, column=1, sticky="n", rowspan = 2)
 
