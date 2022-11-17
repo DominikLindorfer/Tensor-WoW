@@ -33,6 +33,9 @@ from lib.directkeys import PressKey, ReleaseKey, W, A, S, D, dict_hkeys
 #-----Setup TKInter Root and App-----
 from lib.setup_windows import setup_app, setup_root, setup_buttons
 
+#-----Setup Global Config -> Simplistic use for updateable system variables-----
+import lib.config
+
 #-----Main Window-----
 root = Tk()
 setup_root(root)
@@ -49,8 +52,8 @@ label = Label(app, image = photo)
 label.image = photo
 label.grid(row=0, column=0, columnspan = 2)
 
-config_filepath = "C:/Users/Dominik/Programs/WoW-RotBot/Config/Config.dat"
-settings_path = "C:/Users/Dominik/Programs/WoW-RotBot/Settings.dat"
+# config_filepath = "C:/Users/Dominik/Programs/WoW-RotBot/Config/Config.dat"
+# settings_path = "C:/Users/Dominik/Programs/WoW-RotBot/Settings.dat"
 
 #-----Actual Bot Main Routine-----
 def stop():
