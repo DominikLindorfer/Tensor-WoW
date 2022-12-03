@@ -12,6 +12,7 @@ pynput = "*"
 ttkthemes = "*"
 ipykernel = "*"
 pywin32 = "*"
+tensorflow = "==2.10"
 
 [dev-packages]
 

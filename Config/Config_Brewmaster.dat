@@ -1,13 +1,13 @@
 -----Icon Directory-----
-F:/WoWAddonDev/WoWIcons/Monk/
+C:/Users/Dominik/Programs/WoW-RotBot/WoWIcons/Monk/
 -----Spells-----
-Tigerpalm Blackout Kegsmash Rushingjadewind Cranekick Breath
+Tigerpalm Blackout Risingsunkick Kegsmash Rushingjadewind Cranekick Breath Chiwave
 -----Cooldowns-----
 Healingelixir Blackox Purifying Niuzao Celestial Fortifyingbrew Legkick peacebloom Touchofdeath
 -----Covenant-----
 Weaponsoforder peacebloom
 -----Hotkeys Spells-----
-["1","2","E","F","4","3"]
+["1","2","Q","E","F","4","3","6"]
 -----Hotkeys CDs-----
 [["LCONTROL", "Q"], ["LCONTROL", "E"], ["LALT", "2"], ["LALT", "1"], ["LALT", "3"], ["LSHIFT", "4"], ["LSHIFT", "E"], [], ["G"]]
 -----Hotkeys Covenant-----

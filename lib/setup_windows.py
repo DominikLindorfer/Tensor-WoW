@@ -1,5 +1,6 @@
 from PIL.ImageTk import PhotoImage
 from tkinter import ttk
+import lib.config
 
 def setup_root(root):
     root.title("WoW Rot Bot")
@@ -26,8 +27,8 @@ def setup_buttons(app, start, stop, config, variables, showWA, thread_findmouse)
     # Button_Stop = Button(app, bg="Red", fg="Black", text="Stop", font = helv36, command=stop)
 
     # open_configfile, config_filepath, Label_Filepath_Config  = config[0], config[1], config[2]
-    open_configfile, Label_Filepath_Config  = config[0], config[2]
-    global config_filepath
+    open_configfile, config_filepath, Label_Filepath_Config  = config[0], config[1], config[2]
+    # global config_filepath
     Spells_True, CDs_True, Kick_True, Covenant_True, Healer_True = variables[0], variables[1], variables[2], variables[3], variables[4]
 
     Button_Start = ttk.Button(app, text="Start", command=start, style="L.TButton")

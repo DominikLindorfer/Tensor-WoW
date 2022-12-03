@@ -1,9 +1,7 @@
 local _, addonTable = ...;
 
 --- @type MaxDps
-if not MaxDps then
-	return
-end
+if not MaxDps then return end
 
 local MaxDps = MaxDps;
 local UnitPower = UnitPower;
@@ -50,43 +48,6 @@ function Monk:Brewmaster()
 	local targetHealth = UnitHealth('target');
 	local staggerAmount = UnitStagger('player');
 	local staggerPercent = (staggerAmount / healthMax) * 100;
-	MaxDps:GlowEssences();
-
-	--TOD on CD
-	MaxDps:GlowCooldown(BR.TouchOfDeath,cooldown[BR.TouchOfDeath].ready and targetHealthPercent < 15 and targetHealth < health and targetHealth > 0);
-	--Niuzao on CD
-	MaxDps:GlowCooldown(BR.InvokeNiuzao,cooldown[BR.InvokeNiuzao].ready);
-	--DEFENSIVE GOES FIRST
-	if staggerPercent > 60 and cooldown[BR.CelestialBrew].ready then
-		MaxDps:GlowCooldown(BR.CelestialBrew, cooldown[BR.CelestialBrew].ready);
-	end
-
-	if healthPercent <= 50 and cooldown[BR.CelestialBrew].ready then
-		MaxDps:GlowCooldown(BR.CelestialBrew, cooldown[BR.CelestialBrew].ready);
-	end
-
-	if talents[BR.HealingElixir] and healthPercent <= 85 and cooldown[BR.HealingElixir].ready then
-		MaxDps:GlowCooldown(BR.HealingElixir, cooldown[BR.HealingElixir].ready);
-	end
-
-	if staggerPercent > 20 and cooldown[BR.PurifyingBrew].charges > 1.5 and cooldown[BR.PurifyingBrew].ready then
-		MaxDps:GlowCooldown(BR.PurifyingBrew, cooldown[BR.PurifyingBrew].ready);
-	end
-
-	if staggerPercent > 50 and cooldown[BR.PurifyingBrew].ready then
-		MaxDps:GlowCooldown(BR.PurifyingBrew, cooldown[BR.PurifyingBrew].ready);
-	end
-	
-	if talents[BR.BlackOxBrew] and not cooldown[BR.PurifyingBrew].ready and not cooldown[BR.CelestialBrew].ready then
-		MaxDps:GlowCooldown(BR.BlackOxBrew, cooldown[BR.BlackOxBrew].ready);
-	end
-		
-	if healthPercent <= 30 then
-		MaxDps:GlowCooldown(BR.FortifyingBrew, cooldown[BR.FortifyingBrew].ready);
-	end
-	
-	--MaxDps:GlowCooldown(BR.WeaponsOfOrder, cooldown[BR.WeaponsOfOrder].ready);
-	MaxDps:GlowCooldown(BR.LegSweep, cooldown[BR.LegSweep].ready);
 
 	if cooldown[BR.KegSmash].ready then
 		return BR.KegSmash;
@@ -109,4 +70,63 @@ function Monk:Brewmaster()
 	elseif energy >=65 and targets >= 3 then
 		return BR.SpinningCraneKick;
 	end
+
+
+	-- --TOD on CD
+	-- MaxDps:GlowCooldown(BR.TouchOfDeath,cooldown[BR.TouchOfDeath].ready and targetHealthPercent < 15 and targetHealth < health and targetHealth > 0);
+	-- --Niuzao on CD
+	-- MaxDps:GlowCooldown(BR.InvokeNiuzao,cooldown[BR.InvokeNiuzao].ready);
+	-- --DEFENSIVE GOES FIRST
+	-- if staggerPercent > 60 and cooldown[BR.CelestialBrew].ready then
+	-- 	MaxDps:GlowCooldown(BR.CelestialBrew, cooldown[BR.CelestialBrew].ready);
+	-- end
+
+	-- if healthPercent <= 50 and cooldown[BR.CelestialBrew].ready then
+	-- 	MaxDps:GlowCooldown(BR.CelestialBrew, cooldown[BR.CelestialBrew].ready);
+	-- end
+
+	-- if talents[BR.HealingElixir] and healthPercent <= 85 and cooldown[BR.HealingElixir].ready then
+	-- 	MaxDps:GlowCooldown(BR.HealingElixir, cooldown[BR.HealingElixir].ready);
+	-- end
+
+	-- if staggerPercent > 20 and cooldown[BR.PurifyingBrew].charges > 1.5 and cooldown[BR.PurifyingBrew].ready then
+	-- 	MaxDps:GlowCooldown(BR.PurifyingBrew, cooldown[BR.PurifyingBrew].ready);
+	-- end
+
+	-- if staggerPercent > 50 and cooldown[BR.PurifyingBrew].ready then
+	-- 	MaxDps:GlowCooldown(BR.PurifyingBrew, cooldown[BR.PurifyingBrew].ready);
+	-- end
+	
+	-- if talents[BR.BlackOxBrew] and not cooldown[BR.PurifyingBrew].ready and not cooldown[BR.CelestialBrew].ready then
+	-- 	MaxDps:GlowCooldown(BR.BlackOxBrew, cooldown[BR.BlackOxBrew].ready);
+	-- end
+		
+	-- if healthPercent <= 30 then
+	-- 	MaxDps:GlowCooldown(BR.FortifyingBrew, cooldown[BR.FortifyingBrew].ready);
+	-- end
+	
+	-- --MaxDps:GlowCooldown(BR.WeaponsOfOrder, cooldown[BR.WeaponsOfOrder].ready);
+	-- MaxDps:GlowCooldown(BR.LegSweep, cooldown[BR.LegSweep].ready);
+
+	-- if cooldown[BR.KegSmash].ready then
+	-- 	return BR.KegSmash;
+	-- end
+
+	-- if cooldown[BR.BlackoutKick].ready then
+	-- 	return BR.BlackoutKick;
+	-- end
+
+	-- if cooldown[BR.BreathofFire].ready then
+	-- 	return BR.BreathofFire;
+	-- end
+
+	-- if talents[BR.RushingJadeWind] and cooldown[BR.RushingJadeWind].ready and buff[BR.RushingJadeWind].remains < 1 then
+	-- 	return BR.RushingJadeWind;
+	-- end	
+
+	-- if energy >= 65 and targets < 3 then
+	-- 	return BR.TigerPalm;
+	-- elseif energy >=65 and targets >= 3 then
+	-- 	return BR.SpinningCraneKick;
+	-- end
 end
