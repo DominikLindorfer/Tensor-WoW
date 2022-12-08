@@ -282,9 +282,9 @@ def RotBot_main():
             if icons_filenames[classes[1]].split('.')[0] in cooldowns[i]:
                 keysCD2press = hotkeys_CDs[i]
                 break
-        
-        # print(keys2press, keysCD2press)
-        
+
+        print(keys2press, keysCD2press)
+
         #-----Select Direct Input Key to press-----
         #-----Kick First if Casting-----
         if(printscreen_kick.sum()/100 == 226):
