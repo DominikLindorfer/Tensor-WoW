@@ -8,6 +8,7 @@ GUI for WoW Rotation Bot
 
 #-----Library Imports-----
 from tkinter import * 
+from tkinter import ttk
 from threading import Thread
 from win32gui import GetWindowText, GetForegroundWindow
 
@@ -69,11 +70,7 @@ label.grid(row=0, column=0, columnspan = 2)
 config_filepath = "C:/Users/Dominik/Programs/WoW-RotBot/Config/Config_Brewmaster.dat"
 settings_path = "C:/Users/Dominik/Programs/WoW-RotBot/Settings.dat"
 
-#-----Actual Bot Main Routine-----
-def stop():
-    # Assign global variable and set value to stop
-    global stop
-    stop = 1
+
 
 # WA_Position_Spells = [1480, 584, 28, 28]
 # WA_Position_CDs = [1480, 682, 28, 28]
@@ -92,7 +89,6 @@ def RotBot_main():
     #-----Main Rotation-Bot Routine-----
     first_run = True
     global config_filepath
-    # config_filepath = filepath
     global WA_Position_Spells
     global WA_Position_CDs
     global WA_Position_Covenant
@@ -115,6 +111,7 @@ def RotBot_main():
 
     # model = load_model(filepath, compile = True)
 
+    #-----Get Settings-----
     print("RotBot Main Function, Filepath: ", config_filepath)
 
     icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick, hotkeys_party = get_config(config_filepath)
@@ -135,6 +132,7 @@ def RotBot_main():
     #-----Set IconSize-----
     icon_dim = (56,56)
 
+    #-----Rotation Loop-----
     while True:
 
         if stop == 1:
@@ -145,8 +143,6 @@ def RotBot_main():
             time.sleep(0.5)
             continue
 
-        #-----Read Screen and Compare to Icons-----
-        
         #-----Check if Character is in Combat? -> Red (<100) = Combat, Green  (>100) = Not in Combat----
         printscreen = screen_record(WA_Position_Combat[0], WA_Position_Combat[1], 5, 5)
         printscreen = cv2.cvtColor(printscreen, cv2.COLOR_BGR2GRAY)
@@ -241,6 +237,10 @@ def RotBot_main():
         
         time.sleep(random.uniform(0,0.4))
 
+#-----Actual Bot Main Routine-----
+def stop():
+    global stop
+    stop = 1
 
 def start_RotBot():
     # Assign global variable and initialize value
@@ -248,16 +248,12 @@ def start_RotBot():
     stop = 0
     
     global config_filepath
-    # config_filepath = lib.config.config_filepath
-    # global lib.config.config_filepath
     global WA_Position_Spells
     global WA_Position_CDs
     global WA_Position_Covenant
-    # print(config_filepath, lib.config.config_filepath)
     # Create and launch a thread 
     t = Thread(target = RotBot_main)
     # t = Thread(target = lambda:RotBot_main(filepath=config_filepath))
-    # t = Thread(target = lambda:RotBot_main(filepath=lib.config.config_filepath))
     t.start()
 
 WA_Position = WA_Position_Covenant
@@ -267,15 +263,6 @@ WA_img = cv2.cvtColor(WA_img, cv2.COLOR_BGR2GRAY)
 WA_img = PIL.Image.fromarray(WA_img)
 WA_img = ImageTk.PhotoImage(image=WA_img) 
 
-
-from tkinter import font as tkFont
-helv36 = tkFont.Font(family='Helvetica', size=20, weight='bold')
-
-def var_states():
-   print("%d %d %d" % (Spells_True.get(), CDs_True.get(), Covenant_True.get()))
-
-
-from tkinter import ttk
 
 # Button(app, text='Get What to use', command=var_states).grid(row=6, column=1, columnspan = 2)
 
@@ -354,8 +341,6 @@ label_showWA_Covenant.grid(row=4, column=1, rowspan = 2, sticky="nsew")
 # label_showWA_Covenant = Label(app, image = WA_img, bg = "White")
 # label_showWA_Covenant.image = WA_img
 # label_showWA_Covenant.grid(row=9, column=1, rowspan = 2, sticky="nsew") 
-    
-#-----Entries-----
 
 #-----Style-----
 set_app_style(root)
