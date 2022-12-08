@@ -15,10 +15,12 @@ import PIL
 import PIL.Image as Image
 import PIL.ImageTk as ImageTk
 
-from tensorflow.keras.models import load_model
-import tensorflow as tf
+# from tensorflow.keras.models import load_model
+# import tensorflow as tf
+import tensorflow.lite as tflite
+import tensorflow.python.ops.nn_ops as tfnn
 
-from os import walk
+from os import walk, environ
 
 
 #-----Style-----
@@ -94,6 +96,7 @@ import random
 from skimage.metrics import structural_similarity as compare_ssim
 
 
+environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
 WA_Position_Spells = [1480, 584, 28, 28]
 WA_Position_CDs = [1480, 682, 28, 28]
@@ -125,7 +128,18 @@ def RotBot_main():
     #-----Load CNN -----
     class_icons = "Monk/"
     filepath = './saved_model_icons/' + class_icons
-    model = load_model(filepath, compile = True)
+
+    # Setup TF-Lite Interpreter 
+    interpreter = tflite.Interpreter(filepath + "model.tflite")
+    interpreter.allocate_tensors()
+
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details() 
+
+
+
+
+    # model = load_model(filepath, compile = True)
 
     print("RotBot Main Function, Filepath: ", config_filepath)
 
@@ -252,7 +266,7 @@ def RotBot_main():
         printscreen_CDs_np = np.asarray(printscreen_CDs)
         printscreen_CDs_np = printscreen_CDs_np / 255.0
 
-        printscreen_array = np.array([printscreen_np, printscreen_CDs_np])
+        # printscreen_array = np.array([printscreen_np, printscreen_CDs_np])
 
         printscreen_kick = screen_record(WA_Position_Kick[0], WA_Position_Kick[1], 5, 5)
         printscreen_kick = cv2.cvtColor(printscreen_kick, cv2.COLOR_BGR2GRAY)
@@ -260,26 +274,37 @@ def RotBot_main():
         # # Convert into Numpy array and Predict some Samples
         # samples_to_predict = np.array(samples_to_predict)
         # print(samples_to_predict.shape)
-        predictions = model.predict(printscreen_array)
 
-        classes = np.argmax(predictions, axis = 1)
-        score = tf.nn.softmax(predictions)
+        # TF Model PredictionsInterpreter 
+        pred_classes = []
+        for sample in [printscreen_np.astype(np.float32), printscreen_CDs_np.astype(np.float32)]:
+            interpreter.set_tensor(input_details[0]["index"], [sample])
+            interpreter.invoke()
+            predictions = interpreter.get_tensor(output_details[0]["index"])
 
-        for i in range(len(classes)):
-            print(icons_filenames[classes[i]], np.max(score[i])*100)
-            
+            pred_class = np.argmax(predictions, axis = 1)
+            pred_classes.append(pred_class[0])
+            # score = tf.nn.softmax(predictions)
+            score = tfnn.softmax(predictions)
+            print(filenames[pred_class[0]], np.max(score[0])*100)
+
+        # predictions = model.predict(printscreen_array)
+        # classes = np.argmax(predictions, axis = 1)
+        # score = tf.nn.softmax(predictions)
+        # for i in range(len(classes)):
+        #     print(icons_filenames[classes[i]], np.max(score[i])*100)
 
         print(spells)
         print(cooldowns) 
         keys2press, keysCD2press = None, None
 
         for i in range(len(spells)):
-            if icons_filenames[classes[0]].split('.')[0] in spells[i]:
+            if icons_filenames[pred_classes[0]].split('.')[0] in spells[i]:
                 keys2press = hotkeys[i]
                 break
         
         for i in range(len(cooldowns)):
-            if icons_filenames[classes[1]].split('.')[0] in cooldowns[i]:
+            if icons_filenames[pred_classes[1]].split('.')[0] in cooldowns[i]:
                 keysCD2press = hotkeys_CDs[i]
                 break
 
