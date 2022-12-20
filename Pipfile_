@@ -4,16 +4,16 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-ipykernel = "*"
-pillow = "*"
-numpy = "*"
 opencv-python = "*"
+pillow = "*"
 scikit-image = "*"
-pywin32 = "*"
-tk = "*"
-ttkthemes = "*"
-tensorflow = "==2.10"
+numpy = "*"
 pynput = "*"
+ttkthemes = "*"
+ipykernel = "*"
+pywin32 = "*"
+tensorflow = "==2.10"
+tk = "*"
 
 [dev-packages]
 
