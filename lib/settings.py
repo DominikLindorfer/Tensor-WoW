@@ -1,4 +1,5 @@
 import ast
+import json
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 #-----Find Path of the Config File-----
 
@@ -34,7 +35,7 @@ def get_config(config_filepath):
    
     return icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick, hotkeys_party
 
-def get_Settings(settings_path = "Settings.dat"):
+def get_settings(settings_path = "Settings.dat"):
    f = open(settings_path, "r")
    f.readline()
    WA_Position_Spells = ast.literal_eval(f.readline().rstrip()) 
@@ -59,6 +60,22 @@ def get_Settings(settings_path = "Settings.dat"):
    
    return WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant, WA_Position_Combat, WA_Position_Kick, WA_Position_Casting, WA_Position_Party
 
+def get_settings_json(settings_path = "settings.json"):
+
+    with open(settings_path) as json_file:
+        settings = json.load(json_file)
+
+    config_filepath = settings["config_filepath"]
+    WA_Position_Spells    = settings["WA_Position_Spells"]
+    WA_Position_CDs       = settings["WA_Position_CDs"]
+    WA_Position_Covenant  = settings["WA_Position_Covenant"]
+    WA_Position_Combat    = settings["WA_Position_Combat"]
+    WA_Position_Kick      = settings["WA_Position_Kick"]
+    WA_Healer_Casting = settings["WA_Healer_Casting"]
+    WA_Healer_Party_Positions = settings["WA_Healer_Party_Positions"]
+    
+    return config_filepath, WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant, WA_Position_Combat, WA_Position_Kick, WA_Healer_Casting, WA_Healer_Party_Positions
+
 def open_configfile(config_filepath, Label_Filepath_Config):
 
     """Open a file for editing."""
@@ -72,8 +89,18 @@ def open_configfile(config_filepath, Label_Filepath_Config):
     Label_Filepath_Config["text"] = filepath
     # global config_filepath
     config_filepath = filepath
-    print(config_filepath)
-        
+    # print(config_filepath)
+    
+    with open("settings.json") as json_file:
+        settings = json.load(json_file)
+
+    settings["config_filepath"] = config_filepath 
+
+    json_object = json.dumps(settings, indent=4)
+    
+    with open("settings.json", "w") as outfile:
+        outfile.write(json_object)
+
     return filepath
 
 def save_file():

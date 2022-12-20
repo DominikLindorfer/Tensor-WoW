@@ -1,6 +1,9 @@
 from PIL.ImageTk import PhotoImage
-from tkinter import ttk
+import PIL
+from PIL import ImageTk
+from tkinter import ttk, Frame, Label
 import lib.config
+from lib.screen_functions import showWA_Pic
 
 def setup_root(root):
     root.title("WoW Rot Bot")
@@ -20,15 +23,20 @@ def setup_app(app):
     for row in range(row_count):
         app.grid_rowconfigure(row, weight=1, minsize=25)
 
+def setup_buttons_labels(app, start, stop, config, variables, thread_findmouse, WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant): 
+    #-----Labels-----
+    Label_Utilities = ttk.Label(master=app, text="  Utilities  ", style = "L2.TLabel")
+    Label_Utilities.grid(row=2, column=0, sticky="n")
+    Label_WAPosition = ttk.Label(master=app, text="WeakAura Position on Screen", style = "L3.TLabel")
+    Label_WAPosition.grid(row=10, column=0, sticky="n")
+    
+    Label_Filepath_Config = ttk.Label(master=app, text="Config File Path", style = "L3.TLabel", wraplength=200)
+    Label_Filepath_Config.grid(row=3, column=1, sticky="n", rowspan = 2)
 
-#-----Buttons-----    
-def setup_buttons(app, start, stop, config, variables, showWA, thread_findmouse): 
-    # Button_Start = Button(app, bg="#00FF00", fg="Black", text="Start", font = helv36, command=start_RotBot)
-    # Button_Stop = Button(app, bg="Red", fg="Black", text="Stop", font = helv36, command=stop)
+    #-----Buttons-----
+    showWA = lambda:showWA_Pic(label_showWA_Spells, label_showWA_CDs, label_showWA_Covenant, WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant)
 
-    # open_configfile, config_filepath, Label_Filepath_Config  = config[0], config[1], config[2]
-    open_configfile, config_filepath, Label_Filepath_Config  = config[0], config[1], config[2]
-    # global config_filepath
+    open_configfile, config_filepath = config[0], config[1]
     Spells_True, CDs_True, Kick_True, Covenant_True, Healer_True = variables[0], variables[1], variables[2], variables[3], variables[4]
 
     Button_Start = ttk.Button(app, text="Start", command=start, style="L.TButton")
@@ -52,3 +60,30 @@ def setup_buttons(app, start, stop, config, variables, showWA, thread_findmouse)
 
     Button_WAPosition = ttk.Button(master=app, text="Get WA Position", command=thread_findmouse, style = "s.TButton")
     Button_WAPosition.grid(row=9, column=0, sticky="nsew", padx=2, pady=2)
+    
+    #-----Frame for WeakAura Pictures-----
+    WA_img = PIL.Image.new('RGB', (56, 56))
+    WA_img = ImageTk.PhotoImage(image=WA_img) 
+
+    frame_WAs = Frame(app)
+    frame_WAs.configure(bg='White')
+    frame_WAs.grid(row=5, column=1, rowspan = 6)
+
+    Label_Spells = ttk.Label(master=frame_WAs, text="Spells:      ", style = "L4.TLabel")
+    Label_Spells.grid(row=0, column=0, sticky="w", rowspan = 2)
+
+    Label_CDs = ttk.Label(master=frame_WAs, text="Cooldowns:      ", style = "L4.TLabel")
+    Label_CDs.grid(row=2, column=0, sticky="w", rowspan = 2)
+
+    Label_Covenant = ttk.Label(master=frame_WAs, text="Covenant:      ", style = "L4.TLabel")
+    Label_Covenant.grid(row=4, column=0, sticky="w", rowspan = 2)
+
+    label_showWA_Spells = Label(frame_WAs, image = WA_img, bg = "White")
+    label_showWA_Spells.grid(row=0, column=1, rowspan = 2, sticky="e") 
+
+    label_showWA_CDs = Label(frame_WAs, image = WA_img, bg = "White")
+    label_showWA_CDs.grid(row=2, column=1, rowspan = 2, sticky="nsew") 
+
+    label_showWA_Covenant = Label(frame_WAs, image = WA_img, bg = "White")
+    label_showWA_Covenant.grid(row=4, column=1, rowspan = 2, sticky="nsew") 
+    

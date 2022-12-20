@@ -14,6 +14,7 @@ tk = "*"
 ttkthemes = "*"
 tensorflow = "==2.10"
 pynput = "*"
+sv-ttk = "*"
 
 [dev-packages]
 
