@@ -97,8 +97,6 @@ def RotBot_main():
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details() 
 
-    # model = load_model(filepath, compile = True)
-
     #-----Get Settings-----
     config_filepath, WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant, WA_Position_Combat, WA_Position_Kick, WA_Position_Casting, WA_Position_Party = get_settings_json()
     print("RotBot Main Function, Filepath: ", config_filepath)

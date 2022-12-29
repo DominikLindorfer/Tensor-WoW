@@ -35,6 +35,22 @@ def get_config(config_filepath):
    
     return icon_dir, spells, cooldowns, covenant, hotkeys, hotkeys_CDs, hotkeys_covenant, hotkeys_kick, hotkeys_party
 
+def get_config_json(config_filepath):
+    
+    with open(config_filepath) as json_file:
+        settings = json.load(json_file)
+
+    class_CNN = settings.get("Class", None)
+    icon_dir = settings.get("Icon Directory", None)
+    spells = settings.get("Spells", None)
+    cooldowns = settings.get("Cooldowns", None)
+    hotkeys = settings.get("Hotkeys Spells", None)
+    hotkeys_CDs = settings.get("Hotkeys CDs", None)
+    hotkeys_kick = settings.get("Hotkeys Kick", None)
+    hotkeys_party = settings.get("Hotkeys Party", None)
+   
+    return icon_dir, spells, cooldowns, hotkeys, hotkeys_CDs, hotkeys_kick, hotkeys_party, class_CNN
+
 def get_settings(settings_path = "Settings.dat"):
    f = open(settings_path, "r")
    f.readline()
