@@ -1,15 +1,15 @@
 -----Icon Directory-----
 C:/Users/Dominik/Programs/WoW-RotBot/WoWIcons/Warrior/
 -----Spells-----
-Dragonroar Revenge Demoshout Ravager Thunderclap Shieldslam Devastate
+Shieldslam Shockwave Revenge Thunderclap Execute 
 -----Cooldowns-----
-Shieldwall Laststand Impendingvictory Avatar Shieldblock Ignorepain Shockwave peacebloom
+Shieldwall Laststand Impendingvictory Avatar Shieldblock Ignorepain Demoshout Rallyingcry Ravager Thunderousroar peacebloom
 -----Covenant-----
 AdaptiveSwarm peacebloom
 -----Hotkeys Spells-----
-["3","E","5","G","Q","1","2"]
+["1","2","3","Q","6"]
 -----Hotkeys CDs-----
-[["LCONTROL","Q"], ["LALT","5"], ["LCONTROL", "4"], ["LSHIFT", "E"], ["LALT", "1"], ["4"], ["LCONTROL","3"], []]
+[["LCONTROL","Q"], ["LALT","5"], ["LCONTROL", "4"], ["LSHIFT", "E"], ["E"], ["4"], ["5"], ["LSHIFT", "1"], ["G"], ["LALT","3"], []]
 -----Hotkeys Covenant-----
 [["LCONTROL","F"], []]
 -----Hotkey Kick-----

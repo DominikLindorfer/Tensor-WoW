@@ -86,7 +86,8 @@ def RotBot_main():
     global Healer_True
     
     #-----Load CNN -----
-    class_icons = "Monk/"
+    # class_icons = "Monk/"
+    class_icons = "Warrior/"
     filepath = './saved_model_icons/' + class_icons
 
     # Setup TF-Lite Interpreter 
