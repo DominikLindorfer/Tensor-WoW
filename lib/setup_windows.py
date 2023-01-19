@@ -15,7 +15,7 @@ def setup_app(app):
     app.grid()
 
     col_count = 10
-    row_count = 12
+    row_count = 16
 
     for col in range(col_count):
         app.grid_columnconfigure(col, weight=1, minsize=200)
@@ -32,6 +32,12 @@ def setup_buttons_labels(app, start, stop, config, variables, thread_findmouse, 
     
     Label_Filepath_Config = ttk.Label(master=app, text="Config File Path", style = "L3.TLabel", wraplength=200)
     Label_Filepath_Config.grid(row=3, column=1, sticky="n", rowspan = 2)
+
+    Label_Output_Header = ttk.Label(master=app, text="  Output  ", style = "L2.TLabel")
+    Label_Output_Header.grid(row=12, column=0, sticky="n", columnspan=2)   
+    
+    Label_Output = ttk.Label(master=app, text="  RotBot Output  ", style = "L3.TLabel")
+    Label_Output.grid(row=14, column=0, sticky="n", columnspan=2, rowspan=2)   
 
     #-----Buttons-----
     showWA = lambda:showWA_Pic(label_showWA_Spells, label_showWA_CDs, label_showWA_Covenant, WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant)
@@ -87,3 +93,14 @@ def setup_buttons_labels(app, start, stop, config, variables, thread_findmouse, 
     label_showWA_Covenant = Label(frame_WAs, image = WA_img, bg = "White")
     label_showWA_Covenant.grid(row=4, column=1, rowspan = 2, sticky="nsew") 
     
+# Button(app, text='Get What to use', command=var_states).grid(row=6, column=1, columnspan = 2)
+# Button_WAPosition = Button(master=app, text="Get WA Position", command=thread_findmouse)
+# Button_WAPosition.grid(row=1, column=0, sticky="nsew")
+# Button_move_WASpellsleft = Button(master=app, text="left", command=move_WAleft)
+# Button_move_WASpellsleft.grid(row=4, column=1, sticky="nsew")
+# Button_move_WASpellsright = Button(master=app, text="right", command=move_WAright)
+# Button_move_WASpellsright.grid(row=5, column=1, sticky="nsew")
+# Button_move_WASpellsup = Button(master=app, text="up", command=move_WAup)
+# Button_move_WASpellsup.grid(row=4, column=2, sticky="nsew")
+# Button_move_WASpellsdown = Button(master=app, text="down", command=move_WAdown)
+# Button_move_WASpellsdown.grid(row=5, column=2, sticky="nsew")

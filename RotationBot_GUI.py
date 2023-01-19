@@ -84,7 +84,9 @@ def RotBot_main():
     global Covenant_True
     global Kick_True
     global Healer_True
-    
+
+    # print(Spells_True.get(), CDs_True.get())
+
     #-----Load CNN -----
     # class_icons = "Monk/"
     class_icons = "Warrior/"
@@ -192,22 +194,22 @@ def RotBot_main():
                 # print(sh_arr_CDs[0,0])
                 for key_CDs in keysCD2press:
                     PressKey(dict_hkeys["_" + key_CDs])
-                    time.sleep(random.uniform(0,0.5))
+                    time.sleep(random.uniform(0,0.1))
                     
                 for key_CDs in keysCD2press:
                     ReleaseKey(dict_hkeys["_" + key_CDs]) 
-                    time.sleep(random.uniform(0,0.5))
+                    time.sleep(random.uniform(0,0.3))
         
         # #-----Spells Third-----
         if(Spells_True.get()):
             if keys2press is not None:
                 # print(sh_arr[0,1])
                 key = dict_hkeys["_" + keys2press]
-                time.sleep(random.uniform(0,0.5)) 
+                time.sleep(random.uniform(0,0.1)) 
                 PressKey(key)
                 ReleaseKey(key)
         
-        time.sleep(random.uniform(0,0.4))
+        time.sleep(random.uniform(0,0.05))
 
 #-----Actual Bot Main Routine-----
 def stop():
@@ -233,17 +235,7 @@ app.mainloop()
 
 
 
-# Button(app, text='Get What to use', command=var_states).grid(row=6, column=1, columnspan = 2)
-# Button_WAPosition = Button(master=app, text="Get WA Position", command=thread_findmouse)
-# Button_WAPosition.grid(row=1, column=0, sticky="nsew")
-# Button_move_WASpellsleft = Button(master=app, text="left", command=move_WAleft)
-# Button_move_WASpellsleft.grid(row=4, column=1, sticky="nsew")
-# Button_move_WASpellsright = Button(master=app, text="right", command=move_WAright)
-# Button_move_WASpellsright.grid(row=5, column=1, sticky="nsew")
-# Button_move_WASpellsup = Button(master=app, text="up", command=move_WAup)
-# Button_move_WASpellsup.grid(row=4, column=2, sticky="nsew")
-# Button_move_WASpellsdown = Button(master=app, text="down", command=move_WAdown)
-# Button_move_WASpellsdown.grid(row=5, column=2, sticky="nsew")
+
 
 
 

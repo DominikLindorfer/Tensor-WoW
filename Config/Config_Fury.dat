@@ -1,0 +1,16 @@
+-----Icon Directory-----
+C:/Users/Dominik/Programs/WoW-RotBot/WoWIcons/Warrior/
+-----Spells-----
+Bloodthirst Bloodbath Crushingblow Rampage Execute Whirlwind
+-----Cooldowns-----
+Spearofbastion Recklessness Avatar Odynsfury Ravager peacebloom
+-----Covenant-----
+AdaptiveSwarm peacebloom
+-----Hotkeys Spells-----
+["1","1","3","4","E","Q"]
+-----Hotkeys CDs-----
+[["2"], ["LALT","3"], ["LSHIFT", "E"], ["5"], ["G"], []]
+-----Hotkeys Covenant-----
+[["LCONTROL","F"], []]
+-----Hotkey Kick-----
+[["LSHIFT", "Q"]]
