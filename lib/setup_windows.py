@@ -35,9 +35,6 @@ def setup_buttons_labels(app, start, stop, config, variables, thread_findmouse, 
 
     Label_Output_Header = ttk.Label(master=app, text="  Output  ", style = "L2.TLabel")
     Label_Output_Header.grid(row=12, column=0, sticky="n", columnspan=2)   
-    
-    Label_Output = ttk.Label(master=app, text="  RotBot Output  ", style = "L3.TLabel")
-    Label_Output.grid(row=14, column=0, sticky="n", columnspan=2, rowspan=2)   
 
     #-----Buttons-----
     showWA = lambda:showWA_Pic(label_showWA_Spells, label_showWA_CDs, label_showWA_Covenant, WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant)
@@ -57,8 +54,8 @@ def setup_buttons_labels(app, start, stop, config, variables, thread_findmouse, 
     cb_row = 3
     ttk.Checkbutton(app, text="Enable Spells", variable=Spells_True,style='Red.TCheckbutton').grid(row=cb_row, column=0, sticky="w", padx=(15, 0))
     ttk.Checkbutton(app, text="Enable CDs", variable=CDs_True, style='Red.TCheckbutton').grid(row=cb_row+1, column=0, sticky="w", padx=(15, 0))
-    ttk.Checkbutton(app, text="Enable Covenant", variable=Kick_True, style='Red.TCheckbutton').grid(row=cb_row+2, column=0, sticky="w", padx=(15, 0))
-    ttk.Checkbutton(app, text="Enable Kick", variable=Covenant_True, style='Red.TCheckbutton').grid(row=cb_row+3, column=0, sticky="w", padx=(15, 0))
+    ttk.Checkbutton(app, text="Enable Kick", variable=Kick_True, style='Red.TCheckbutton').grid(row=cb_row+2, column=0, sticky="w", padx=(15, 0))
+    ttk.Checkbutton(app, text="Enable Covenant", variable=Covenant_True, style='Red.TCheckbutton').grid(row=cb_row+3, column=0, sticky="w", padx=(15, 0))
     ttk.Checkbutton(app, text="I'm Healing?", variable=Healer_True, style='Red.TCheckbutton').grid(row=cb_row+4, column=0, sticky="w", padx=(15, 0))
 
     Button_showWA_Pic = ttk.Button(master=app, text="Get WA Pictures", command=showWA, style = "s.TButton")
@@ -92,7 +89,11 @@ def setup_buttons_labels(app, start, stop, config, variables, thread_findmouse, 
 
     label_showWA_Covenant = Label(frame_WAs, image = WA_img, bg = "White")
     label_showWA_Covenant.grid(row=4, column=1, rowspan = 2, sticky="nsew") 
-    
+
+
+def update_output_label(output_label, text):
+    output_label["text"] = text
+
 # Button(app, text='Get What to use', command=var_states).grid(row=6, column=1, columnspan = 2)
 # Button_WAPosition = Button(master=app, text="Get WA Position", command=thread_findmouse)
 # Button_WAPosition.grid(row=1, column=0, sticky="nsew")

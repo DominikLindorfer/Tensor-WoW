@@ -1,17 +1,30 @@
-keylvl = 16
-rating = 37.5 + keylvl*7.5 + 2*7.5 + 15
-print(rating)
+def rating(lvl):
+    return 30 + lvl * 5 + 5*2 + 10 + (lvl - 10) * 2
+
+def rating_overall(lvl_fort, lvl_tyr):
+
+    fort = rating(lvl_fort)
+    tyr = rating(lvl_tyr)
+
+    if fort >= tyr:
+        return 1.5 * fort + 0.5 * tyr
+    else:
+        return 1.5 * tyr + 0.5 * fort
+
+rating_overall(17, 16)
+rating_overall(17, 18) + 2.5 * 1.5
+
+rating(19)
+rating(18)
 
 
-keylvl_fort = 16
-keylvl_tyr = 15
+
+rating_overall(19, 17)
+rating_overall(18, 17)
 
 
-rating_fort = 37.5 + keylvl_fort*7.5 + 2*7.5 + 15
-rating_tyr = 37.5 + keylvl_tyr*7.5 + 2*5.5 + 15
-
-rating = 1.5 * rating_fort + 0.5 * rating_tyr
-print(rating)
+rating_overall(19, 21)
+rating_overall(19, 21)
 
 
-215.1 + 67.7
+rating_overall(17, 17)
