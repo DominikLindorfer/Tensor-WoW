@@ -45,6 +45,7 @@ from lib.settings import (
     open_configfile,
     save_file,
     get_settings_json,
+    get_config_json,
 )
 
 # -----Get Screen Functions-----
@@ -110,19 +111,6 @@ def RotBot_main():
 
     # print(Spells_True.get(), CDs_True.get())
 
-    # -----Load CNN -----
-    # class_icons = "Monk/"
-    class_icons = "Warrior/"
-    # class_icons = "Paladin/"
-    filepath = "./saved_model_icons/" + class_icons
-
-    # Setup TF-Lite Interpreter
-    interpreter = tflite.Interpreter(filepath + "model.tflite")
-    interpreter.allocate_tensors()
-
-    input_details = interpreter.get_input_details()
-    output_details = interpreter.get_output_details()
-
     # -----Get Settings-----
     (
         config_filepath,
@@ -140,24 +128,33 @@ def RotBot_main():
         icon_dir,
         spells,
         cooldowns,
-        covenant,
         hotkeys,
         hotkeys_CDs,
-        hotkeys_covenant,
         hotkeys_kick,
         hotkeys_party,
-    ) = get_config(config_filepath)
+        class_icons,
+    ) = get_config_json(config_filepath)
+
     print(
-        icon_dir,
+        # icon_dir,
         spells,
-        cooldowns,
-        covenant,
+        # cooldowns,
         hotkeys,
         hotkeys_CDs,
-        hotkeys_covenant,
         hotkeys_kick,
-        hotkeys_party,
+        # hotkeys_party,
+        class_icons,
     )
+
+    # -----Load CNN -----
+    filepath = "./saved_model_icons/" + class_icons + "/"
+
+    # Setup TF-Lite Interpreter
+    interpreter = tflite.Interpreter(filepath + "model.tflite")
+    interpreter.allocate_tensors()
+
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details()
 
     icons_filenames = []
     for (dirpath, dirnames, filenames) in walk(icon_dir):
@@ -263,7 +260,7 @@ def RotBot_main():
             for key_kick in hotkeys_kick[0]:
                 ReleaseKey(dict_hkeys["_" + key_kick])
                 time.sleep(random.uniform(0, 0.05))
-            continue
+            # continue
 
         # -----Cooldowns First-----
         if CDs_True.get():

@@ -46,7 +46,7 @@ def get_config_json(config_filepath):
     cooldowns = settings.get("Cooldowns", None)
     hotkeys = settings.get("Hotkeys Spells", None)
     hotkeys_CDs = settings.get("Hotkeys CDs", None)
-    hotkeys_kick = settings.get("Hotkeys Kick", None)
+    hotkeys_kick = settings.get("Hotkey Kick", None)
     hotkeys_party = settings.get("Hotkeys Party", None)
    
     return icon_dir, spells, cooldowns, hotkeys, hotkeys_CDs, hotkeys_kick, hotkeys_party, class_CNN
