@@ -8,10 +8,10 @@ from lib.screen_functions import showWA_Pic
 def setup_root(root):
     root.title("WoW Rot Bot")
     root.geometry("505x580")
-    root.tk.call('wm', 'iconphoto', root._w, PhotoImage(file='LogoV3_icon.png'))
+    root.tk.call('wm', 'iconphoto', root._w, PhotoImage(file='LogoV3_icon.png', master=root))
 
 def setup_app(app):
-    app.configure(bg='White')
+    # app.configure(bg='White')
     app.grid()
 
     col_count = 10
@@ -25,8 +25,8 @@ def setup_app(app):
 
 def setup_buttons_labels(app, start, stop, config, variables, thread_findmouse, WA_Position_Spells, WA_Position_CDs, WA_Position_Covenant): 
     #-----Labels-----
-    Label_Utilities = ttk.Label(master=app, text="  Utilities  ", style = "L2.TLabel")
-    Label_Utilities.grid(row=2, column=0, sticky="n")
+    # Label_Utilities = ttk.Label(master=app, text="  Utilities  ", style = "L2.TLabel")
+    # Label_Utilities.grid(row=2, column=0, sticky="n")
     Label_WAPosition = ttk.Label(master=app, text="WeakAura Position on Screen", style = "L3.TLabel")
     Label_WAPosition.grid(row=10, column=0, sticky="n")
     
@@ -65,11 +65,12 @@ def setup_buttons_labels(app, start, stop, config, variables, thread_findmouse, 
     Button_WAPosition.grid(row=9, column=0, sticky="nsew", padx=2, pady=2)
     
     #-----Frame for WeakAura Pictures-----
+    WA_img = None
     WA_img = PIL.Image.new('RGB', (56, 56))
     WA_img = ImageTk.PhotoImage(image=WA_img) 
-
+    
     frame_WAs = Frame(app)
-    frame_WAs.configure(bg='White')
+    # frame_WAs.configure(bg='White')
     frame_WAs.grid(row=5, column=1, rowspan = 6)
 
     Label_Spells = ttk.Label(master=frame_WAs, text="Spells:      ", style = "L4.TLabel")
@@ -81,15 +82,36 @@ def setup_buttons_labels(app, start, stop, config, variables, thread_findmouse, 
     Label_Covenant = ttk.Label(master=frame_WAs, text="Covenant:      ", style = "L4.TLabel")
     Label_Covenant.grid(row=4, column=0, sticky="w", rowspan = 2)
 
-    label_showWA_Spells = Label(frame_WAs, image = WA_img, bg = "White")
+    label_showWA_Spells = Label(frame_WAs)
     label_showWA_Spells.grid(row=0, column=1, rowspan = 2, sticky="e") 
+    label_showWA_Spells.configure(image=WA_img)
+    label_showWA_Spells.image = WA_img
 
-    label_showWA_CDs = Label(frame_WAs, image = WA_img, bg = "White")
+    label_showWA_CDs = Label(frame_WAs)
     label_showWA_CDs.grid(row=2, column=1, rowspan = 2, sticky="nsew") 
+    label_showWA_CDs.configure(image=WA_img)
+    label_showWA_CDs.image = WA_img
 
-    label_showWA_Covenant = Label(frame_WAs, image = WA_img, bg = "White")
+    label_showWA_Covenant = Label(frame_WAs)
     label_showWA_Covenant.grid(row=4, column=1, rowspan = 2, sticky="nsew") 
+    label_showWA_Covenant.configure(image=WA_img)
+    label_showWA_Covenant.image = WA_img
 
+    # label_showWA_Spells = Label(frame_WAs, image = WA_img, bg = "White")
+    # label_showWA_Spells.grid(row=0, column=1, rowspan = 2, sticky="e") 
+
+    # label_showWA_CDs = Label(frame_WAs, image = WA_img, bg = "White")
+    # label_showWA_CDs.grid(row=2, column=1, rowspan = 2, sticky="nsew") 
+
+    # label_showWA_Covenant = Label(frame_WAs, image = WA_img, bg = "White")
+    # label_showWA_Covenant.grid(row=4, column=1, rowspan = 2, sticky="nsew") 
+
+    # labelname_Spells.configure(image=WA_img_Spells)
+    # labelname_Spells.image = WA_img_Spells
+    # labelname_CDs.configure(image=WA_img_CDs)
+    # labelname_CDs.image = WA_img_CDs
+    # labelname_Covenants.configure(image=WA_img_Covenant)
+    # labelname_Covenants.image = WA_img_Covenant
 
 def update_output_label(output_label, text):
     output_label["text"] = text

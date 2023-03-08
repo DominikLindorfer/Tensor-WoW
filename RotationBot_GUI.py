@@ -67,15 +67,18 @@ from lib.setup_windows import (
 
 # -----Main Window-----
 root = Tk()
+# root = Toplevel()
 setup_root(root)
 
 app = Frame(root)
 setup_app(app)
 
 # -----Set Logo on Top-----
-fp = open("LogoV3.png", "rb")
-image = PIL.Image.open(fp)
-photo = PIL.ImageTk.PhotoImage(image)
+# fp = open("LogoV3.png", "rb")
+# image = PIL.Image.open(fp)
+image = PIL.Image.open("LogoV4.png")
+image = image.resize((500,170))
+photo = PIL.ImageTk.PhotoImage(image, master=root)
 
 label = Label(app, image=photo)
 label.image = photo
@@ -136,13 +139,13 @@ def RotBot_main():
     ) = get_config_json(config_filepath)
 
     print(
-        # icon_dir,
+        icon_dir,
         spells,
-        # cooldowns,
+        cooldowns,
         hotkeys,
         hotkeys_CDs,
         hotkeys_kick,
-        # hotkeys_party,
+        hotkeys_party,
         class_icons,
     )
 
@@ -321,7 +324,7 @@ setup_buttons_labels(
 
 # -----Setup Output Label; needs to be global so Main-Routine can continously update-----
 Label_Output = ttk.Label(master=app, text="  RotBot Output  ", style="L5.TLabel")
-Label_Output.grid(row=14, column=0, sticky="n", columnspan=2, rowspan=2)
+Label_Output.grid(row=13, column=0, sticky="n", columnspan=2, rowspan=1)
 
 # -----Style-----
 set_app_style(root)
