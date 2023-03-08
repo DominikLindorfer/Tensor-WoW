@@ -76,7 +76,7 @@ setup_app(app)
 # -----Set Logo on Top-----
 # fp = open("LogoV3.png", "rb")
 # image = PIL.Image.open(fp)
-image = PIL.Image.open("LogoV4.png")
+image = PIL.Image.open("./Logo/LogoV4.png")
 image = image.resize((500,170))
 photo = PIL.ImageTk.PhotoImage(image, master=root)
 

@@ -1,4 +1,4 @@
-from ttkthemes import ThemedStyle
+# from ttkthemes import ThemedStyle
 from tkinter.ttk import Style
 
 # -----Style-----

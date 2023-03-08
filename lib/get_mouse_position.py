@@ -1,7 +1,7 @@
 #-----Find WA Position on Screen (click on anchor in the middle)-----
 from pynput import mouse    
-from pynput import keyboard
-from pynput.keyboard import Key
+# from pynput import keyboard
+# from pynput.keyboard import Key
 from threading import Thread
 
 def on_move(x, y):
