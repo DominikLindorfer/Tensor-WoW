@@ -142,7 +142,7 @@ def open_configfile(config_filepath, Label_Filepath_Config):
     if not filepath:
         return
 
-    Label_Filepath_Config["text"] = filepath
+    Label_Filepath_Config["text"] = filepath.split("/")[-1]
     # global config_filepath
     config_filepath = filepath
     # print(config_filepath)
