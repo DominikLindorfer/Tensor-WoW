@@ -8,7 +8,7 @@ ipykernel = "*"
 pillow = "*"
 numpy = "*"
 opencv-python = "*"
-scikit-image = "*"
+scikit-image = "==0.18.3"
 pywin32 = "*"
 tk = "*"
 ttkthemes = "*"
@@ -16,6 +16,7 @@ tensorflow = "==2.10"
 pynput = "*"
 sv-ttk = "*"
 ttkbootstrap = "*"
+auto-py-to-exe = "*"
 
 [dev-packages]
 

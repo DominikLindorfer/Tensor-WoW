@@ -10,7 +10,7 @@ def setup_root(root):
     root.title("WoW Rot Bot")
     root.geometry("505x580")
     root.tk.call(
-        "wm", "iconphoto", root._w, PhotoImage(file="./Logo/LogoV3_icon.png", master=root)
+        "wm", "iconphoto", root._w, PhotoImage(file="./Logo/LogoV4_icon.png", master=root)
     )
 
 
