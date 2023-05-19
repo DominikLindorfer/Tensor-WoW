@@ -1,0 +1,9 @@
+{
+    "Class" : "Paladin",
+    "Icon Directory" : "C:/Users/Dominik/Programs/WoW-RotBot/WoWIcons/Paladin/",
+    "Spells" : ["Judgement", "Bladeofjustice", "Templarstrike", "Templarslash", "Wakeofashes", "Divinestorm", "Templarsverdict", "Divinetoll", "Hammerofwrath"],
+    "Cooldowns" : ["Sentinel", "Wordofglory", "Divineshield", "Layonhands", "peacebloom"],
+    "Hotkeys Spells" : ["1","2","3","3","4","Q","E","F","G"],
+    "Hotkeys CDs" : [["LSHIFT", "E"], ["LSHIFT", "F"], ["LALT", "4"], ["LCONTROL", "4"], []],
+    "Hotkey Kick" : [["LSHIFT", "Q"]]
+}

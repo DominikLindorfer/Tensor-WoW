@@ -1,9 +1,9 @@
 {
     "Class" : "Warrior",
     "Icon Directory" : "C:/Users/Dominik/Programs/WoW-RotBot/WoWIcons/Warrior/",
-    "Spells" : ["Shieldslam", "Shockwave", "Revenge", "Thunderclap", "Execute"],
-    "Cooldowns" : ["Shieldwall", "Laststand", "Impendingvictory", "Avatar", "Shieldblock", "Ignorepain", "Demoshout", "Rallyingcry", "Ravager", "Thunderousroar", "peacebloom"],
-    "Hotkeys Spells" : ["1","2","3","Q","6"],
-    "Hotkeys CDs" : [["LCONTROL","Q"], ["LALT","5"], ["LCONTROL", "4"], ["LSHIFT", "E"], ["E"], ["4"], ["5"], ["LSHIFT", "1"], ["G"], ["LALT","3"], []],
+    "Spells" : ["Shieldslam", "Revenge", "Thunderclap", "Execute", "Impendingvictory", "Shieldblock", "Ignorepain", "Demoshout", "Ravager"],
+    "Cooldowns" : ["Shieldwall", "Laststand", "Avatar", "Rallyingcry", "Thunderousroar", "Shockwave", "peacebloom"],
+    "Hotkeys Spells" : ["1","3","Q","8", "2", "E", "4", "5", "G"],
+    "Hotkeys CDs" : [["LCONTROL","Q"], ["LALT","5"], ["LSHIFT", "E"], ["LSHIFT", "1"], ["LALT","3"], ["LCONTROL", "4"], []],
     "Hotkey Kick" : [["LSHIFT", "Q"]]
 }
