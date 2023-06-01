@@ -1,0 +1,9 @@
+{
+    "Class" : "Druid",
+    "Icon Directory" : "C:/Users/Dominik/Programs/WoW-RotBot/WoWIcons/Druid/",
+    "Spells" : ["Moonfire", "Mangle", "Swipe", "Trash", "Maul", "Pulverize"],
+    "Cooldowns" : ["Ironfur", "Barkskin", "Incarnation", "Frenziedregeneration", "Survivalinstincts", "Renewal", "Regeofthesleeper", "Heartofthewild", "Regrowth", "peacebloom"],
+    "Hotkeys Spells" : ["Q","1","2","E","3","G"],
+    "Hotkeys CDs" : [["4"], ["5"], ["LSHIFT", "E"], ["LSHIFT", "F"], ["F"], ["LALT", "1"], ["LCONTROL","1"], ["LCONTROL","F"], ["LCONTROL","2"], []],
+    "Hotkey Kick" : [["LSHIFT", "Q"]]
+}
