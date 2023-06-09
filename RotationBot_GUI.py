@@ -148,7 +148,7 @@ def RotBot_main():
     )
 
     # -----Load CNN -----
-    filepath = "./saved_model_icons/" + class_icons + "/"
+    filepath = "./saved_models/" + class_icons + "/"
 
     # Setup TF-Lite Interpreter
     interpreter = tflite.Interpreter(filepath + "model.tflite")

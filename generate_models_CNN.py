@@ -128,7 +128,7 @@ test_loss, test_acc = model.evaluate(test_images, test_labels, verbose=2)
 print(test_acc)
 
 # Save the model
-filepath = "./saved_model_icons/" + class_icons
+filepath = "./saved_models/" + class_icons
 save_model(model, filepath)
 
 # Load the model
