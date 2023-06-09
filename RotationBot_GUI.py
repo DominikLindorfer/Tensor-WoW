@@ -12,10 +12,8 @@ from tkinter import ttk
 from threading import Thread
 from win32gui import GetWindowText, GetForegroundWindow
 
-import PIL
 import PIL.Image as Image
 import PIL.ImageTk as ImageTk
-import PIL.ImageGrab as ImageGrab
 
 from os import walk, environ
 
@@ -76,9 +74,9 @@ setup_app(app)
 # -----Set Logo on Top-----
 # fp = open("LogoV3.png", "rb")
 # image = PIL.Image.open(fp)
-image = PIL.Image.open("./Logo/LogoV4.png")
+image = Image.open("./Logo/LogoV4.png")
 image = image.resize((500,170))
-photo = PIL.ImageTk.PhotoImage(image, master=root)
+photo = ImageTk.PhotoImage(image, master=root)
 
 label = Label(app, image=photo)
 label.image = photo
