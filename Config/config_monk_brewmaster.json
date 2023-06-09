@@ -2,8 +2,8 @@
     "Class" : "Monk",
     "Icon Directory" : "C:/Users/Dominik/Programs/WoW-RotBot/WoWIcons/Monk/",
     "Spells" : ["Tigerpalm", "Blackout", "Risingsunkick", "Kegsmash", "Rushingjadewind", "Cranekick", "Breath", "Chiwave"],
-    "Cooldowns" : ["Healingelixir", "Blackox", "Purifyingbrew", "Invokeniuzao", "Celestialbrew",  "Fortifyingbrew", "Legkick", "peacebloom", "Touchofdeath", "Weaponsoforder", "Dampenharm", "Expelharm", "Bonedustbrew"],
-    "Hotkeys Spells" : ["1","2","Q","E","F","4","3","6"],
-    "Hotkeys CDs" : [["LCONTROL", "Q"], ["LSHIFT", "V"], ["LALT", "2"], ["LALT", "1"], ["LALT", "3"], ["LSHIFT", "4"], ["LSHIFT", "E"], [], [], ["LCONTROL", "1"], ["LALT", "2"], ["LSHIFT", "2"], ["LSHIFT", "1"]],
+    "Cooldowns" : ["Healingelixir", "Blackox", "Purifyingbrew", "Invokeniuzao", "Celestialbrew",  "Fortifyingbrew", "Legkick", "peacebloom", "Touchofdeath", "Weaponsoforder", "Dampenharm", "Expelharm", "Bonedustbrew", "Explodingkeg"],
+    "Hotkeys Spells" : ["1","2","Q","E","F","4","3","7"],
+    "Hotkeys CDs" : [["LCONTROL", "Q"], ["LSHIFT", "V"], ["LALT", "2"], ["LALT", "1"], ["LALT", "3"], ["LSHIFT", "4"], ["LSHIFT", "E"], [], [], ["LCONTROL", "1"], ["LALT", "2"], ["LSHIFT", "2"], ["LSHIFT", "1"], ["LCONTROL", "4"]],
     "Hotkey Kick" : [["LSHIFT", "Q"]]
 }

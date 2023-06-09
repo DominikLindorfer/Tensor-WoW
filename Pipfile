@@ -17,6 +17,7 @@ pynput = "*"
 sv-ttk = "*"
 ttkbootstrap = "*"
 auto-py-to-exe = "*"
+scikit-learn = "*"
 
 [dev-packages]
 
