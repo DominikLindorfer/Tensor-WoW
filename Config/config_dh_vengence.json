@@ -1,9 +1,9 @@
 {
     "Class" : "Demonhunter",
     "Icon Directory" : "C:/Users/Dominik/Programs/WoW-RotBot/WoWIcons/Demonhunter/",
-    "Spells" : ["Infernalstrike", "Soulcleave", "Fracture", "Immolationaura", "Spiritbomb", "Sigilofflame", "Throwglaive"] ,
+    "Spells" : ["Infernalstrike", "Soulcleave", "Fracture", "Immolationaura", "Spiritbomb", "Sigilofflame", "Throwglaive", "Soulcarver"] ,
     "Cooldowns" : ["Demonspikes", "Metamorphasis", "Bulkextraction", "Elysiandecree", "Fierybrand", "Thehunt", "Feldevastation", "peacebloom"],
-    "Hotkeys Spells" : ["1","2","3","4","Q","E","F","5"],
+    "Hotkeys Spells" : ["1","2","3","4","Q","E","F","G"],
     "Hotkeys CDs" : [["LALT", "2"], ["LCONTROL", "Q"], ["LALT", "3"], ["LALT", "4"], ["LSHIFT", "F"], ["LCONTROL", "4"], ["LALT", "1"], []],
     "Hotkey Kick" : [["LSHIFT", "Q"]]
 }
