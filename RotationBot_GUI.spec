@@ -8,7 +8,7 @@ a = Analysis(
     ['C:/Users/Dominik/Programs/WoW-RotBot/RotationBot_GUI.py'],
     pathex=[],
     binaries=[],
-    datas=[('C:/Users/Dominik/Programs/WoW-RotBot/settings.json', '.'), ('C:/Users/Dominik/Programs/WoW-RotBot/themes', 'themes/'), ('C:/Users/Dominik/Programs/WoW-RotBot/WoWIcons', 'WoWIcons/'), ('C:/Users/Dominik/Programs/WoW-RotBot/saved_model_icons', 'saved_model_icons/'), ('C:/Users/Dominik/Programs/WoW-RotBot/Config', 'Config/'), ('C:/Users/Dominik/Programs/WoW-RotBot/Logo', 'Logo/')],
+    datas=[('C:/Users/Dominik/Programs/WoW-RotBot/settings.json', '.'), ('C:/Users/Dominik/Programs/WoW-RotBot/themes', 'themes/'), ('C:/Users/Dominik/Programs/WoW-RotBot/WoWIcons', 'WoWIcons/'), ('C:/Users/Dominik/Programs/WoW-RotBot/saved_models', 'saved_models/'), ('C:/Users/Dominik/Programs/WoW-RotBot/config', 'config/'), ('C:/Users/Dominik/Programs/WoW-RotBot/logo', 'logo/')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

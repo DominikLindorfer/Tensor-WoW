@@ -59,7 +59,7 @@ def augment_icons(image, numb_rand=1000):
 
 
 # Change up the Class Name here!
-class_icons = "DeathKnight/"
+class_icons = "Demonhunter/"
 mypath = "./WoWIcons/" + class_icons
 
 files = []
