@@ -39,7 +39,7 @@ The respective Weakaura string is:
 
 ## 
 
-Both spells and cooldowns are read directly from screen using a simplistic 2D-CNN, as shown below, trained for 10 epochs on 3000 augmented 56x56 images per class ability. The augmentation as well as the training & tests are done within the file [generate_models_CNN.py](generate_models_CNN.py) from which the resulting models are saved using tf-lite (for speed and minimal size). Please note that the augmentation is done b.c. for screen-reading an anchor has to be defined which, frankly, is difficult to hit pixel-perfect. Hence, a 2D-CNN is a simpler and much more reliable method compared to alternatives like the [structural similarity index measure](https://scikit-image.org/docs/stable/auto_examples/transform/plot_ssim.html), which I've used in previous versions.
+Both spells and cooldowns are read directly from screen using a simplistic 2D-CNN, as shown below, trained for 10 epochs on 3000 augmented 56x56 images per class ability. The augmentation as well as the training & tests are done within the file [generate_models_CNN.py](generate_models_CNN.py) from which the resulting models are saved using tf-lite (for speed and minimal size). Please note that the augmentation is done b.c. an anchor needs to be defined for screen-reading which, frankly, is difficult to hit pixel-perfect. Hence, a 2D-CNN is a simpler and much more reliable method compared to alternatives like the [structural similarity index measure](https://scikit-image.org/docs/stable/auto_examples/transform/plot_ssim.html), which I've used in previous versions.
 
 ```python
 model = models.Sequential()
