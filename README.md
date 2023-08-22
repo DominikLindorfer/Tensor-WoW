@@ -8,7 +8,7 @@ Tensor-WoW is the project behind the program **RotBot**, a fully pixel-based rot
 
 # Demo Video
 
-This demo shows several high-end M+ keys played using Tensor-WoW from a tank (my) perspective
+This demo shows several high-end M+ keys played using Tensor-WoW from every tank's (my) perspective
 
 ## Supported Classes as of WoW-Patch 10.1.5
 
