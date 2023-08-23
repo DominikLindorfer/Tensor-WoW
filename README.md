@@ -12,7 +12,7 @@ This demo shows several high-end M+ keys played using Tensor-WoW from every tank
 
 ## Supported Classes as of WoW-Patch 10.1.5
 
-Currently supported classes are mainly tanks, which I main :)
+Currently supported classes are mainly tanks, which I main :). The respective TF-Lite models can be found [here](./saved_models).
 
 | Class  | Spec | Availability |
 | ------------- | ------------- | ------------- |
