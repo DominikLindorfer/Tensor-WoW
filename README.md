@@ -6,7 +6,7 @@ Tensor-WoW is the project behind the program **RotBot**, a fully pixel-based rot
   <img src="https://github.com/DominikLindorfer/Tensor-WoW/assets/21077042/bc5b1ec8-41ab-437e-8178-75d1ebf1254a" width="350">
 </p>
 
-# Showcase M+ Video
+## Showcase M+ Video
 
 This demo video shows several high-end M+ keys played using Tensor-WoW from every tank's (my) perspective
 
@@ -25,7 +25,7 @@ Currently supported classes are mainly tanks, which I main :). The respective TF
 | Paladin | Protection & Retribution  | ✅  |
 | Warrior | Protection, Arms & Fury  | ✅ |
 
-# Functionality & Usage
+## Functionality & Usage
 
 The [WoW Addon MaxDps-Minimal](https://github.com/DominikLindorfer/MaxDps-Minimal) is used to show spells and cooldowns for the rotation of each class separately in a customized WeakAura as shown below:
 
