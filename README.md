@@ -10,8 +10,7 @@ Tensor-WoW is the project behind the program **RotBot**, a fully pixel-based rot
 
 This demo video shows several high-end M+ keys played using Tensor-WoW from every tank's (my) perspective
 
-[![RotBot Showcase M+](https://github.com/DominikLindorfer/WoW-RotBot/assets/21077042/8c039736-0cd6-4bbc-b9c3-0a73aab6b4c9)](https://vimeo.com/859296819?share=copy "RotBot Showcase M+")
-
+[![RotBot Showcase M+](https://i.imgur.com/tDnfpFy.png)](https://vimeo.com/859296819?share=copy "RotBot Showcase M+")
 
 ## Supported Classes as of WoW-Patch 10.1.5
 
