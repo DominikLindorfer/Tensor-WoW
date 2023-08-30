@@ -49,7 +49,7 @@ To activate and de-activate the following macro is used (make you own Macro usin
 
 ![image](https://github.com/DominikLindorfer/Tensor-WoW/assets/21077042/26b5da8b-a95e-410f-9137-dc8361a40529)
 
-### Configs
+### Configs and Settings
 
 Configs are written in .json format within [this directory](/Config/) and match spells and cooldowns (respectively the names of icons in ) to the correct keybinding, e.g. my Paladin's 'Blessed Hammer' spell is on Hotkey '3' and my 'Ancientkings' cooldown is on 'LSHIFT +  F'.
 
@@ -63,6 +63,29 @@ Configs are written in .json format within [this directory](/Config/) and match 
     "Hotkey Kick" : [["LSHIFT", "Q"]]
 }
 ```
+
+To read the correct positions from screen, the position of the Weak-Aura needs to be identified. Use RotBot's built in feature to identify the position of the mouse cursor when hovering over the WeakAura on-screen and enter the shown coordinates into the file [settings.py](settings.py). In the example below my spells have their anchor (middle-point) at the coordinates (54, 37) on my screen and 28 is half the pixel-size used in the WeakAura.
+
+<p align="left">
+  <img src="https://github.com/DominikLindorfer/Tensor-WoW/assets/21077042/f3a8274d-64a0-4bff-b4e4-1bbcb859b718" width="250">
+</p>
+
+```json
+"WA_Position_Spells": [
+    54,
+    37,
+    28,
+    28
+]
+```
+
+Use the **Get WA Pictures** button to check, if the icons are visible with entered positions:
+
+<p align="left">
+  <img src="https://github.com/DominikLindorfer/Tensor-WoW/assets/21077042/1c69dfb8-1076-471b-b1ea-56d7436914b3" width="200">
+</p>
+
+
 
 ## Screenreading and Keypresses
 
