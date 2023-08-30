@@ -3,7 +3,7 @@
 Tensor-WoW is the project behind the program **RotBot**, a fully pixel-based rotation bot for World of Warcraft using a 2D-convolutional neural network based on tensorflow.
 
 <p align="left">
-  <img src="https://github.com/DominikLindorfer/WoW-RotBot/assets/21077042/cd167c00-0a33-4e63-b318-ea7fbe0b3524" width="350">
+  <img src="https://github.com/DominikLindorfer/Tensor-WoW/assets/21077042/bc5b1ec8-41ab-437e-8178-75d1ebf1254a" width="350">
 </p>
 
 # Showcase M+ Video
@@ -30,7 +30,7 @@ Currently supported classes are mainly tanks, which I main :). The respective TF
 The [WoW Addon MaxDps-Minimal](https://github.com/DominikLindorfer/MaxDps-Minimal) is used to show spells and cooldowns for the rotation of each class separately in a customized WeakAura as shown below:
 
 <p align="center">
-  <img src="https://github.com/DominikLindorfer/MaxDps-Minimal/assets/21077042/6f0d528c-e0da-437b-a1c1-16ba74197e89" width="350">
+  <img src="https://github.com/DominikLindorfer/Tensor-WoW/assets/21077042/45f612e4-83bd-4998-b058-cd10ad88dcfd" width="350">
 </p>
 
 The respective Weakaura string is:
@@ -45,11 +45,9 @@ To activate and de-activate the following macro is used (make you own Macro usin
 /stopcasting
 /run toggle_single = not toggle_single
 ```
+![image](https://github.com/DominikLindorfer/Tensor-WoW/assets/21077042/f6f6cc13-4e6b-4f3c-aaad-7816a71bc254)
 
-![image](https://github.com/DominikLindorfer/WoW-RotBot/assets/21077042/4e3052c7-e484-462b-82a4-9edecc2e05ef)
-
-![image](https://github.com/DominikLindorfer/WoW-RotBot/assets/21077042/fc18411f-e3f1-4cf9-ab71-db9e584cc12b)
-
+![image](https://github.com/DominikLindorfer/Tensor-WoW/assets/21077042/26b5da8b-a95e-410f-9137-dc8361a40529)
 
 
 ## Screenreading and Keypresses
