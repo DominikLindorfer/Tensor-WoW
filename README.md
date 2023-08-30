@@ -25,7 +25,7 @@ Currently supported classes are mainly tanks, which I main :). The respective TF
 | Paladin | Protection & Retribution  | ✅  |
 | Warrior | Protection, Arms & Fury  | ✅ |
 
-# Usage & Functionality
+# Functionality & Usage
 
 The [WoW Addon MaxDps-Minimal](https://github.com/DominikLindorfer/MaxDps-Minimal) is used to show spells and cooldowns for the rotation of each class separately in a customized WeakAura as shown below:
 
@@ -49,6 +49,20 @@ To activate and de-activate the following macro is used (make you own Macro usin
 
 ![image](https://github.com/DominikLindorfer/Tensor-WoW/assets/21077042/26b5da8b-a95e-410f-9137-dc8361a40529)
 
+### Configs
+
+Configs are written in .json format within [this directory](/Config/) and match spells and cooldowns (respectively the names of icons in ) to the correct keybinding, e.g. my Paladin's 'Blessed Hammer' spell is on Hotkey '3' and my 'Ancientkings' cooldown is on 'LSHIFT +  F'.
+
+```
+{
+    "Class" : "Paladin",
+    "Spells" : ["Blessedhammer", "Judgement", "Avengersshield", "Hammerofwrath", "Consecration"],
+    "Cooldowns" : ["Ardentdefender", "Sentinel", "Shieldofvengeance", "Acientkings", "Wordofglory", "Seraphim", "Divinetoll", "Eyeoftyr", "Bastionoflight", "Divineshield", "Layonhands", "peacebloom"],
+    "Hotkeys Spells" : ["3","1","2","G","Q"],
+    "Hotkeys CDs" : [["LALT", "3"], ["LSHIFT", "E"], ["4"], ["LSHIFT", "F"], ["E"],  ["LCONTROL", "3"], ["F"], ["LSHIFT", "3"], ["LALT", "5"], ["LALT", "4"], ["LCONTROL", "4"], []],
+    "Hotkey Kick" : [["LSHIFT", "Q"]]
+}
+```
 
 ## Screenreading and Keypresses
 
