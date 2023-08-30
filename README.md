@@ -14,7 +14,7 @@ This demo video shows several high-end M+ keys played using Tensor-WoW from ever
 
 ## Supported Classes as of WoW-Patch 10.1.5
 
-Currently supported classes are mainly tanks, which I main :). The respective TF-Lite models can be found [here](./saved_models).
+Currently supported classes are mainly tanks, which I main :). The respective TF-Lite model for each class, which reads the screen and returns the name of the shown image (according to the icons in [this directory](/WoWIcons/)), can be found [here](./saved_models). The image names are matched to hotkeys as shown below.
 
 | Class  | Spec | Availability |
 | ------------- | ------------- | ------------- |
