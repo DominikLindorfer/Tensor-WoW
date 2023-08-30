@@ -64,7 +64,7 @@ Configs are written in .json format within [this directory](/Config/) and match 
 }
 ```
 
-To read the correct positions from screen, the position of the Weak-Aura needs to be identified. Use RotBot's built in feature to identify the position of the mouse cursor when hovering over the WeakAura on-screen and enter the shown coordinates into the file [settings.py](settings.py). In the example below my spells have their anchor (middle-point) at the coordinates (54, 37) on my screen and 28 is half the pixel-size used in the WeakAura.
+To read the correct positions from screen, the position of the Weak-Aura needs to be identified. Use RotBot's built in feature to identify the position of the mouse cursor when hovering over the WeakAura on-screen and enter the shown coordinates into the file [settings.py](settings.py). In the example below my spells have their anchor (middle-point) at the coordinates (54, 37) on my screen and 28 is half the icon-size used in the WeakAura.
 
 <p align="left">
   <img src="https://github.com/DominikLindorfer/Tensor-WoW/assets/21077042/f3a8274d-64a0-4bff-b4e4-1bbcb859b718" width="250">
